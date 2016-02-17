@@ -1,0 +1,17 @@
+.settings
+
+target
+
+data
+
+logs
+
+src/test/resources/database
+
+
+.classpath
+
+.project
+.factorypath
+
+.apt_generated
