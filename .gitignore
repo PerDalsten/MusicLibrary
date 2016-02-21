@@ -5,13 +5,14 @@ target
 data
 
 logs
-
-src/test/resources/database
-
+**/*.log
 
 .classpath
 
 .project
+
 .factorypath
 
-.apt_generated
+/.apt_generated/
+
+src/test/resources/database

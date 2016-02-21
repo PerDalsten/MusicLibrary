@@ -28,7 +28,7 @@
 			<AppenderRef ref="File" />
 		</Root>
 
-		<Logger name="dk.purplegreen" level="WARN" additivity="false">
+		<Logger name="dk.purplegreen.musiclibrary" level="WARN" additivity="false">
 			<AppenderRef ref="File" />
 		</Logger>
 	</Loggers>

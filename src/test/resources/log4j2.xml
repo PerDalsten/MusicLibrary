@@ -10,7 +10,7 @@
 			<PatternLayout pattern="%d [%t] %p %c{1.} - %m%n" />
 		</Console>
 
-		<RollingFile name="File" fileName="${logdir}/Test.log"
+		<RollingFile name="File" fileName="${logdir}/MusicLibrary.log"
 			filePattern="${logdir}/LogTest-%i.log.zip">
 			<PatternLayout>
 				<Pattern>%d [%t] %p %c{1.} - %m%n</Pattern>
@@ -28,7 +28,7 @@
 			<AppenderRef ref="File" />
 		</Root>
 
-		<Logger name="dk.purplegreen.test" level="DEBUG" additivity="false">
+		<Logger name="dk.purplegreen.musiclibrary" level="DEBUG" additivity="false">
 			<AppenderRef ref="File" />
 		</Logger>
 	</Loggers>
