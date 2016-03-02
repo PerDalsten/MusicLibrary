@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
@@ -30,6 +31,7 @@ public class Album {
 	@Column(name = "ALBUM_YEAR")
 	private Integer year;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
+	@OrderBy("disc, track")
 	private List<Song> songs = new ArrayList<Song>();
 
 	public Integer getId() {

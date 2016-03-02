@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<title><ui:insert name="title">MusicLibrary</ui:insert></title>
+</h:head>
+
+<h:body>
+
+	<h:form>
+		<h:outputLabel value="Artist" />
+		<h:inputText id="artist" value="#{albumController.artist}" />
+		<h:outputLabel value="Title" />
+		<h:inputText id="title" value="#{albumController.title}" />
+		<h:outputLabel value="Year" />
+		<h:inputText id="year" value="#{albumController.year}" />		
+		<h:commandButton id="search" value="Search"
+			action="#{albumController.search}"></h:commandButton>
+	</h:form>
+
+	<hr />
+
+	<ul>
+		<ui:repeat value="#{albumController.albums}" var="album">
+			<li><h:link value="#{album.artist} : #{album.title}"
+					outcome="album.xhtml">
+					<f:param name="id" value="#{album.id}" />
+				</h:link></li>
+		</ui:repeat>
+	</ul>
+
+</h:body>
+
+</html>
