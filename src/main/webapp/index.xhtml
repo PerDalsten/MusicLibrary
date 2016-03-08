@@ -11,11 +11,11 @@
 <h:body>
 
 	<h:form>
-		<h:outputLabel value="Artist" />
+		<h:outputLabel value="Artist" for="artist"/>
 		<h:inputText id="artist" value="#{albumController.artist}" />
-		<h:outputLabel value="Title" />
+		<h:outputLabel value="Title" for="title"/>
 		<h:inputText id="title" value="#{albumController.title}" />
-		<h:outputLabel value="Year" />
+		<h:outputLabel value="Year" for="year"/>
 		<h:inputText id="year" value="#{albumController.year}" />		
 		<h:commandButton id="search" value="Search"
 			action="#{albumController.search}"></h:commandButton>
