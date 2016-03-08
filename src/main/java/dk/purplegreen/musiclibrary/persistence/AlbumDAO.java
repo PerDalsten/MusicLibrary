@@ -3,7 +3,6 @@ package dk.purplegreen.musiclibrary.persistence;
 import java.util.ArrayList;
 import java.util.List;
 
-//import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

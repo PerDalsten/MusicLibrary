@@ -1,9 +1,10 @@
 package dk.purplegreen.musiclibrary.ui;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -11,8 +12,10 @@ import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
 
 @Named(value = "albumController")
-@RequestScoped
-public class AlbumController {
+@SessionScoped
+public class AlbumController implements Serializable {
+
+	private static final long serialVersionUID = 7960192974336036316L;
 
 	@Inject
 	private MusicLibraryService musicLibraryService;
@@ -27,7 +30,7 @@ public class AlbumController {
 		return id;
 	}
 
-	public void setId(Integer id) {		
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
