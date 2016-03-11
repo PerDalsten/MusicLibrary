@@ -30,9 +30,18 @@ public class Album {
 	private String title;
 	@Column(name = "ALBUM_YEAR")
 	private Integer year;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true)
 	@OrderBy("disc, track")
 	private List<Song> songs = new ArrayList<Song>();
+
+	public Album() {
+	}
+
+	public Album(String artist, String title, Integer year) {
+		this.artist = artist;
+		this.title = title;
+		this.year = year;
+	}
 
 	public Integer getId() {
 		return id;

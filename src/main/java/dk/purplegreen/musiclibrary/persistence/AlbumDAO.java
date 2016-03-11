@@ -21,11 +21,19 @@ public class AlbumDAO {
 	private EntityManager em;
 
 	public void save(Album album) {
-		em.persist(album);
+		if (album.getId() == null) {
+			em.persist(album);
+		} else {
+			album = em.merge(album);
+		}
 	}
 
 	public Album find(Integer id) {
 		return em.find(Album.class, id);
+	}
+
+	public void delete(Album album) {
+		em.remove(em.merge(album));
 	}
 
 	public List<Album> getAllAlbums() {

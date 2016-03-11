@@ -3,6 +3,8 @@ package dk.purplegreen.musiclibrary.persistence;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -73,5 +75,32 @@ public class AlbumDAOTest {
 
 		assertEquals("Wrong number of results", 1, albums.size());
 		assertEquals("Wrong artist", "The Beatles", albums.get(0).getArtist());
+	}
+
+	@Test
+	public void testCreate() {
+		EntityManager testEM = TestEntityManagerFactory.getEntityManager();
+
+		Album album = new Album();
+
+		albumDAO.save(album);
+
+		verify(em, times(0)).merge(any());
+
+		testEM.close();
+	}
+
+	@Test
+	public void testUpdate() {
+		EntityManager testEM = TestEntityManagerFactory.getEntityManager();
+
+		Album album = new Album();
+		album.setId(42);
+
+		albumDAO.save(album);
+
+		verify(em, times(1)).merge(any());
+
+		testEM.close();
 	}
 }

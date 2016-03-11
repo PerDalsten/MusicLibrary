@@ -2,7 +2,6 @@ package dk.purplegreen.musiclibrary.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,9 +20,22 @@ public class Song {
 	private String title;
 	private Integer track;
 	private Integer disc;
-	@ManyToOne 
+	@ManyToOne
 	@JoinColumn(name = "ALBUM_ID")
 	private Album album;
+
+	public Song() {
+	}
+
+	public Song(String title, Integer track) {
+		this(title, track, 1);
+	}
+
+	public Song(String title, Integer track, Integer disc) {
+		this.title = title;
+		this.track = track;
+		this.disc = disc;
+	}
 
 	public Integer getId() {
 		return id;
@@ -57,7 +69,8 @@ public class Song {
 		this.disc = disc;
 	}
 
-	@XmlTransient //Avoid infinite recursion from bi-directional relationship when serializing to JSON
+	@XmlTransient // Avoid infinite recursion from bi-directional relationship
+					// when serializing to JSON
 	public Album getAlbum() {
 		return album;
 	}

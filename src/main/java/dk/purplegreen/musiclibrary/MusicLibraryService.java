@@ -23,5 +23,10 @@ public class MusicLibraryService {
 
 	public List<Album> findAlbums(String artist, String title, Integer year) {
 		return dao.find(artist, title, year);
-	}	
+	}
+
+	public void createAlbum(Album album) {
+		album.setId(null);
+		dao.save(album);
+	}
 }
