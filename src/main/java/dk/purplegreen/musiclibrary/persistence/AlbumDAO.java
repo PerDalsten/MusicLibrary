@@ -20,12 +20,13 @@ public class AlbumDAO {
 	@PersistenceContext(unitName = "MusicLibrary")
 	private EntityManager em;
 
-	public void save(Album album) {
+	public Album save(Album album) {
 		if (album.getId() == null) {
 			em.persist(album);
 		} else {
 			album = em.merge(album);
 		}
+		return album;
 	}
 
 	public Album find(Integer id) {

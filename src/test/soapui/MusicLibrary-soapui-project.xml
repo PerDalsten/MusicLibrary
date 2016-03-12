@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="128a7779-e5f7-4918-80da-8bcb959d47c0" activeEnvironment="Default" name="MusicLibrary" resourceRoot="" soapui-version="5.2.1" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="02a0aef9-a644-4cc5-9cbb-baff55d129cf" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://localhost:9080" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://localhost:9080</con:endpoint></con:endpoints><con:resource name="Read" path="/MusicLibrary/rest/albums/216" id="43ba0004-7010-4dc3-9981-2aeef70752b2"><con:settings/><con:parameters/><con:method name="Read" id="73ec3fa6-628b-4c30-8dcf-baac00be1725" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://localhost/MusicLibrary/rest/albums/112">ns:Response</con:element></con:representation><con:request name="Super Colossal" id="02ff329f-599d-4f21-9cec-acb171420f81" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:9080</con:endpoint><con:request/><con:originalUri>http://localhost/MusicLibrary/rest/albums/112</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="Create" path="/MusicLibrary/rest/albums" id="64088a89-20c5-4f42-8aea-a8e6444debae"><con:settings/><con:parameters/><con:method name="Create" id="5e5bb654-0cca-4961-84f7-b8be515c190f" method="POST"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:alb="http://localhost/MusicLibrary/rest/albums">alb:Response</con:element></con:representation><con:request name="Dummy Album" id="b227102f-4b9b-4a32-9e42-3a262b1b30f4" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:9080</con:endpoint><con:request>{
+   "year": 2006,
+   "title": "Dummy Album",
+   "artist": "Joe Tester",
+   "songs":    [
+      {         
+         "title": "Super Colossal",
+         "disc": 1,
+         "track": 1
+      },
+      {
+         "title": "Just Like Lightnin'",
+         "disc": 1,
+         "track": 2
+      },
+      {         
+         "title": "It's So Good",
+         "disc": 1,
+         "track": 3
+      }
+   ]
+}</con:request><con:originalUri>http://localhost/MusicLibrary/rest/albums</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="Update" path="/MusicLibrary/rest/albums/693" id="d3aa072c-a44c-48fe-b151-9df993690f65"><con:settings/><con:parameters/><con:method name="Update" id="3bc27b3d-6b1b-4f68-ad5a-b7f1dc316c00" method="PUT"><con:settings/><con:parameters/><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="http://localhost/MusicLibrary/rest/albums/691">ns:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType xsi:nil="true"/><con:status>404</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Dummy Album" id="4d9d42b5-8c70-49ea-b89a-53468d676646" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:9080</con:endpoint><con:request>{
+   "id": 692,
+   "year": 2006,
+   "title": "Updated Dummy Album",
+   "artist": "Joe Tester",
+   "songs":    [
+            {
+         "id": 7757,
+         "title": "Updated Song",
+         "track": 1,
+         "disc": 1
+      },
+            {
+         "id": 7755,
+         "title": "It's So Good",
+         "track": 3,
+         "disc": 1
+      },
+            {
+   
+         "title": "New Song",
+         "track": 2,
+         "disc": 1
+      }
+   ]
+}</con:request><con:originalUri>http://localhost/MusicLibrary/rest/albums/691</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="Delete" path="/MusicLibrary/rest/albums/693" id="5e16f9fb-4f6d-471b-a7b7-a9e6cee9ae5b"><con:settings/><con:parameters/><con:method name="Delete" id="8593640e-9e7a-410b-aa75-9a007c19e40e" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>200</con:status><con:params/><con:element>data</con:element></con:representation><con:representation type="REQUEST"><con:mediaType>application/json</con:mediaType><con:params/></con:representation><con:request name="Dummy Album" id="0ab8b551-484c-432d-912a-e731a50a2222" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:9080</con:endpoint><con:request/><con:originalUri>http://localhost/MusicLibrary/rest/albums/693</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:sensitiveInformation/></con:soapui-project>

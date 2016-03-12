@@ -8,6 +8,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import dk.purplegreen.musiclibrary.AlbumNotFoundException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
 
@@ -68,6 +69,12 @@ public class AlbumController implements Serializable {
 	}
 
 	public Album getAlbum() {
-		return musicLibraryService.getAlbum(getId());
+		try {
+			return musicLibraryService.getAlbum(getId());
+		} catch (AlbumNotFoundException e) {
+			// TODO 
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

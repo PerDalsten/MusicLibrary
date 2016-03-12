@@ -19,7 +19,7 @@
 			<property name="eclipselink.logging.file" value="logs/eclipeselink.log"/>
 			<property name="eclipselink.create-ddl-jdbc-file-name" value="logs/createDDL.jdbc"/>
 			<property name="eclipselink.drop-ddl-jdbc-file-name" value="logs/dropDDL.jdbc"/>
-			
+			<property name="eclipselink.cache.shared.default" value="false"/>			
 		</properties>
 	</persistence-unit>
 </persistence>
