@@ -1,7 +1,11 @@
 package dk.purplegreen.musiclibrary.rest;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -11,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -18,11 +23,11 @@ import javax.ws.rs.core.Response.Status;
 import dk.purplegreen.musiclibrary.AlbumNotFoundException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
-import dk.purplegreen.musiclibrary.model.Song;
 
+@ApplicationPath("/rest")
 @Path("/albums")
 @RequestScoped
-public class Albums {
+public class Albums extends Application {
 
 	@Inject
 	MusicLibraryService service;
@@ -56,8 +61,12 @@ public class Albums {
 	public Response createAlbum(Album album) {
 
 		album.setId(null);
-		album=service.createAlbum(album);
-		return Response.ok(album).build();
+		album = service.createAlbum(album);
+		try {
+			return Response.created(new URI("albums/" + album.getId())).entity(album).build();
+		} catch (URISyntaxException e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 	@PUT
@@ -69,7 +78,7 @@ public class Albums {
 		album.setId(id);
 
 		try {
-			album=service.updateAlbum(album);			
+			album = service.updateAlbum(album);
 			return Response.ok(album).build();
 		} catch (AlbumNotFoundException e) {
 			return Response.status(Status.NOT_FOUND).build();
@@ -80,12 +89,10 @@ public class Albums {
 	@Path("/{id}")
 	public Response deleteAlbum(@PathParam("id") Integer id) {
 		try {
-			Album album = new Album();
-			album.setId(id);			
-			service.deleteAlbum(album);			
+			service.deleteAlbum(id);
 			return Response.ok().build();
 		} catch (AlbumNotFoundException e) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-	}		
+	}
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<title><ui:insert name="title">MusicLibrary</ui:insert></title>
+</h:head>
+
+<f:metadata>
+	<f:viewParam name="id" value="#{albumController.id}" />
+</f:metadata>
+
+<h:body>
+
+	<h1>Edit Album</h1>
+
+	<h:form>
+		<h:outputLabel for="artist" value="Artist: " />
+		<h:inputText id="artist" value="#{albumController.album.artist}" />
+		<h:outputLabel for="title" value="Title: " />
+		<h:inputText id="title" value="#{albumController.album.title}" />
+		<h:outputLabel for="year" value="Year: " />
+		<h:inputText id="year" value="#{albumController.album.year}" />
+		
+		
+		
+		
+
+		<h:commandButton value="Save" action="#{albumController.save}" />
+	</h:form>
+
+
+</h:body>
+</html>

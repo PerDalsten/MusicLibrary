@@ -42,8 +42,8 @@ public class MusicLibraryService {
 		return dao.save(album);
 	}
 
-	public void deleteAlbum(Album album) throws AlbumNotFoundException {
-		dao.delete(getAlbum(album.getId()));
+	public void deleteAlbum(Integer id) throws AlbumNotFoundException {
+		dao.delete(getAlbum(id));
 	}
 
 	private void attachSongs(Album album) {

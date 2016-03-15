@@ -20,6 +20,10 @@
 		<h:commandButton id="search" value="Search"
 			action="#{albumController.search}"></h:commandButton>
 	</h:form>
+	
+	<h:link outcome="edit.xhtml" value="Create New Album">
+		<f:param name="id" value="-1" />
+	</h:link>
 
 	<hr />
 

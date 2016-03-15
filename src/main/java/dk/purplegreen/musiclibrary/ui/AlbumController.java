@@ -26,13 +26,16 @@ public class AlbumController implements Serializable {
 	private Integer year;
 	private Integer id;
 	private List<Album> albums = new ArrayList<>();
+	private Album album;
 
 	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
+		System.out.println("Calling setId: " + id);
 		this.id = id;
+		album = null;
 	}
 
 	public List<Album> getAlbums() {
@@ -68,13 +71,30 @@ public class AlbumController implements Serializable {
 		return "index.xhtml";
 	}
 
+	public String create() {
+		album = new Album();
+		return "edit.xhtml";
+	}
+
 	public Album getAlbum() {
 		try {
-			return musicLibraryService.getAlbum(getId());
+			if (album == null) {
+				if (-1 == getId()) {
+					album = new Album();
+				} else {
+					album = musicLibraryService.getAlbum(getId());
+				}
+			}
 		} catch (AlbumNotFoundException e) {
-			// TODO 
+			// TODO
 			e.printStackTrace();
 			return null;
 		}
+		return album;
+	}
+
+	public String save() {
+		System.out.println("Saving album: " + album.getArtist() + " " + album.getTitle());
+		return "album.xhtml?id=" + album.getId();
 	}
 }
