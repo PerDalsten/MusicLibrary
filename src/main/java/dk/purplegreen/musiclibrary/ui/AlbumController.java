@@ -3,20 +3,27 @@ package dk.purplegreen.musiclibrary.ui;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import dk.purplegreen.musiclibrary.AlbumNotFoundException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
+import dk.purplegreen.musiclibrary.model.Song;
 
 @Named(value = "albumController")
 @SessionScoped
 public class AlbumController implements Serializable {
 
 	private static final long serialVersionUID = 7960192974336036316L;
+
+	private final static Logger log = LogManager.getLogger(AlbumController.class);
 
 	@Inject
 	private MusicLibraryService musicLibraryService;
@@ -33,9 +40,10 @@ public class AlbumController implements Serializable {
 	}
 
 	public void setId(Integer id) {
-		System.out.println("Calling setId: " + id);
+		if (log.isDebugEnabled()) {
+			log.debug("Calling setId: " + id);
+		}
 		this.id = id;
-		album = null;
 	}
 
 	public List<Album> getAlbums() {
@@ -78,15 +86,29 @@ public class AlbumController implements Serializable {
 
 	public Album getAlbum() {
 		try {
-			if (album == null) {
+			if (album == null || !album.getId().equals(getId())) {
 				if (-1 == getId()) {
+
+					if (log.isDebugEnabled()) {
+						log.debug("Creating new album");
+					}
+
 					album = new Album();
+					album.setId(-1);
 				} else {
+					if (log.isDebugEnabled()) {
+						log.debug("Reading album with id: " + getId());
+					}
+
 					album = musicLibraryService.getAlbum(getId());
+				}
+			} else {
+				if (log.isDebugEnabled()) {
+					log.debug("Already has copy of album with id: " + getId());
 				}
 			}
 		} catch (AlbumNotFoundException e) {
-			// TODO
+			// TODO return error.xhtml
 			e.printStackTrace();
 			return null;
 		}
@@ -94,7 +116,100 @@ public class AlbumController implements Serializable {
 	}
 
 	public String save() {
-		System.out.println("Saving album: " + album.getArtist() + " " + album.getTitle());
+		if (log.isDebugEnabled()) {
+			log.debug("Saving album: " + album.getArtist() + " " + album.getTitle());
+		}
+
+		if (album.getId() == -1) {
+			album.setId(null);
+			album = musicLibraryService.createAlbum(album);
+		} else {
+			try {
+				album = musicLibraryService.updateAlbum(album);
+			} catch (AlbumNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+		}
+
 		return "album.xhtml?id=" + album.getId();
+	}
+
+	public String delete() {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Deleting album: " + album.getArtist() + " " + album.getTitle());
+		}
+
+		try {
+			musicLibraryService.deleteAlbum(album.getId());
+		} catch (AlbumNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+
+		// Album object in search list not same as retrieved object
+		// -possibly not a good idea to override equals for JPA entity?
+		albums.removeIf(new Predicate<Album>() {
+			@Override
+			public boolean test(Album a) {
+				if (a.getId().equals(album.getId())) {
+					if (log.isDebugEnabled()) {
+						log.debug("Deleting album from search list: " + album.getId());
+					}
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+
+		album = null;
+
+		return "index.xhtml";
+	}
+
+	public String cancel() {
+		if (log.isDebugEnabled()) {
+			log.debug("Cancel album edit: " + album.getArtist() + " " + album.getTitle());
+		}
+
+		String result;
+		if (album.getId() == -1) {
+			result = "index.xhtml";
+		} else {
+			result = "album.xhtml?id=" + getId();
+		}
+
+		album = null;
+
+		return result;
+	}
+
+	public String addSong() {
+		if (log.isDebugEnabled()) {
+			log.debug("Adding song");
+		}
+
+		if (album.getSongs().size() > 0) {
+			Song song = album.getSongs().get(album.getSongs().size() - 1);
+			album.addSong(new Song("", song.getTrack() + 1, song.getDisc()));
+		} else {
+			album.addSong(new Song("", album.getSongs().size() + 1));
+		}
+
+		return "edit.xhtml?id=" + album.getId();
+	}
+
+	public String deleteSong(Song song) {
+		if (log.isDebugEnabled()) {
+			log.debug("Deleting song: " + song.getId() + " " + song.getTitle());
+		}
+
+		album.getSongs().remove(song);
+
+		return "edit.xhtml?id=" + album.getId();
 	}
 }

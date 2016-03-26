@@ -14,23 +14,52 @@
 
 <h:body>
 
-	<h1>Edit Album</h1>
-
 	<h:form>
 		<h:outputLabel for="artist" value="Artist: " />
 		<h:inputText id="artist" value="#{albumController.album.artist}" />
+		<br />
 		<h:outputLabel for="title" value="Title: " />
 		<h:inputText id="title" value="#{albumController.album.title}" />
+		<br />
 		<h:outputLabel for="year" value="Year: " />
 		<h:inputText id="year" value="#{albumController.album.year}" />
-		
-		
-		
-		
+
+		<h:dataTable value="#{albumController.album.songs}" var="song"
+			rendered="#{not empty albumController.album.songs}" border="1">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Track" />
+				</f:facet>
+				<h:inputText value="#{song.track}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Disc" />
+				</f:facet>
+				<h:inputText value="#{song.disc}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Title" />
+				</f:facet>
+				<h:inputText value="#{song.title}" />
+			</h:column>
+			<h:column>
+				<h:commandButton value="Delete"
+					action="#{albumController.deleteSong(song)}" />
+			</h:column>
+		</h:dataTable>
+
+		<h:commandButton value="Add Song" action="#{albumController.addSong}" />
 
 		<h:commandButton value="Save" action="#{albumController.save}" />
+		<h:commandButton value="Delete" action="#{albumController.delete}" />
+		<h:commandButton value="Cancel" action="#{albumController.cancel}" />
 	</h:form>
 
+	<hr />
+
+	<h:link outcome="index.xhtml" value="Search" />
 
 </h:body>
 </html>

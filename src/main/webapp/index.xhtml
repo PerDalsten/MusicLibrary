@@ -11,30 +11,32 @@
 <h:body>
 
 	<h:form>
-		<h:outputLabel value="Artist" for="artist"/>
-		<h:inputText id="artist" value="#{albumController.artist}" />
-		<h:outputLabel value="Title" for="title"/>
-		<h:inputText id="title" value="#{albumController.title}" />
-		<h:outputLabel value="Year" for="year"/>
-		<h:inputText id="year" value="#{albumController.year}" />		
 		<h:commandButton id="search" value="Search"
 			action="#{albumController.search}"></h:commandButton>
+		<h:outputLabel value="Artist" for="artist" />
+		<h:inputText id="artist" value="#{albumController.artist}" />
+		<h:outputLabel value="Title" for="title" />
+		<h:inputText id="title" value="#{albumController.title}" />
+		<h:outputLabel value="Year" for="year" />
+		<h:inputText id="year" value="#{albumController.year}" />
 	</h:form>
-	
+
 	<h:link outcome="edit.xhtml" value="Create New Album">
 		<f:param name="id" value="-1" />
 	</h:link>
 
 	<hr />
 
-	<ul>
-		<ui:repeat value="#{albumController.albums}" var="album">
-			<li><h:link value="#{album.artist} : #{album.title}"
-					outcome="album.xhtml">
-					<f:param name="id" value="#{album.id}" />
-				</h:link></li>
-		</ui:repeat>
-	</ul>
+	<h:panelGroup rendered="#{not empty albumController.albums}">
+		<ul>
+			<ui:repeat value="#{albumController.albums}" var="album">
+				<li><h:link value="#{album.artist} : #{album.title}"
+						outcome="album.xhtml">
+						<f:param name="id" value="#{album.id}" />
+					</h:link></li>
+			</ui:repeat>
+		</ul>
+	</h:panelGroup>
 
 </h:body>
 

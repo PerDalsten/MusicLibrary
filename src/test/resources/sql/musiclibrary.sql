@@ -1,0 +1,1 @@
+select * from MUSICLIBRARY.ALBUMS where lower(ALBUM_ARTIST) like '%shu%';
