@@ -53,6 +53,28 @@ public class TestEntityManagerFactory {
 
 		em.persist(album);
 
+		album = new Album();
+		album.setArtist("AC/DC");
+		album.setTitle("For Those About to Rock We Salute You");
+		album.setYear(1981);
+
+		song = new Song();
+		song.setTitle("For Those About to Rock We Salute You");
+		song.setDisc(1);
+		song.setTrack(1);
+		song.setAlbum(album);
+
+		album.addSong(song);
+
+		song = new Song();
+		song.setTitle("I Put the Finger on You");
+		song.setDisc(1);
+		song.setTrack(2);
+		song.setAlbum(album);
+		album.addSong(song);
+
+		em.persist(album);
+
 		// Create last
 		album = new Album();
 		album.setArtist("Royal Hunt");
