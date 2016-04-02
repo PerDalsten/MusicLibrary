@@ -6,26 +6,33 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <h:head>
 	<title><ui:insert name="title">MusicLibrary</ui:insert></title>
+	<h:outputStylesheet library="styles" name="musiclibrary.css" />
 </h:head>
 
 <h:body>
 
-	<h:form>
-		<h:commandButton id="search" value="Search"
-			action="#{albumController.search}"></h:commandButton>
+
+
+	<h:form class="search">
 		<h:outputLabel value="Artist" for="artist" />
 		<h:inputText id="artist" value="#{albumController.artist}" />
 		<h:outputLabel value="Title" for="title" />
 		<h:inputText id="title" value="#{albumController.title}" />
 		<h:outputLabel value="Year" for="year" />
-		<h:inputText id="year" value="#{albumController.year}" />
+		<h:inputText id="year" value="#{albumController.year}" maxlength="4"
+			size="4" />
+		<h:commandButton id="search" action="#{albumController.search}"
+			image="resources/images/search.png" title="Search Album">
+		</h:commandButton>
+		<h:link outcome="edit" title="New Album">
+			<f:param name="id" value="-1" />
+			<h:graphicImage library="images" name="new.png" />
+		</h:link>
 	</h:form>
 
-	<h:link outcome="edit.xhtml" value="Create New Album">
-		<f:param name="id" value="-1" />
-	</h:link>
 
 	<hr />
+
 
 	<h:panelGroup rendered="#{not empty albumController.albums}">
 		<ul>

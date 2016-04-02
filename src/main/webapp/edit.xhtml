@@ -6,6 +6,7 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <h:head>
 	<title><ui:insert name="title">MusicLibrary</ui:insert></title>
+	<h:outputStylesheet library="styles" name="musiclibrary.css" />
 </h:head>
 
 <f:metadata>
@@ -14,52 +15,72 @@
 
 <h:body>
 
-	<h:form>
-		<h:outputLabel for="artist" value="Artist: " />
-		<h:inputText id="artist" value="#{albumController.album.artist}" />
-		<br />
-		<h:outputLabel for="title" value="Title: " />
-		<h:inputText id="title" value="#{albumController.album.title}" />
-		<br />
-		<h:outputLabel for="year" value="Year: " />
-		<h:inputText id="year" value="#{albumController.album.year}" />
+	<h:form class="edit">
 
-		<h:dataTable value="#{albumController.album.songs}" var="song"
-			rendered="#{not empty albumController.album.songs}" border="1">
-			<h:column>
-				<f:facet name="header">
-					<h:outputText value="Track" />
-				</f:facet>
-				<h:inputText value="#{song.track}" />
-			</h:column>
-			<h:column>
-				<f:facet name="header">
-					<h:outputText value="Disc" />
-				</f:facet>
-				<h:inputText value="#{song.disc}" />
-			</h:column>
-			<h:column>
-				<f:facet name="header">
-					<h:outputText value="Title" />
-				</f:facet>
-				<h:inputText value="#{song.title}" />
-			</h:column>
-			<h:column>
-				<h:commandButton value="Delete"
-					action="#{albumController.deleteSong(song)}" />
-			</h:column>
-		</h:dataTable>
+		<h:commandButton action="#{albumController.save}"
+			image="resources/images/save.png" title="Save Album">
+		</h:commandButton>
+		<h:commandButton action="#{albumController.delete}"
+			image="resources/images/delete.png" title="Delete Album">
+		</h:commandButton>
+		<h:commandButton action="#{albumController.cancel}"
+			image="resources/images/cancel.png" title="Cancel">
+		</h:commandButton>
 
-		<h:commandButton value="Add Song" action="#{albumController.addSong}" />
+		<hr />
 
-		<h:commandButton value="Save" action="#{albumController.save}" />
-		<h:commandButton value="Delete" action="#{albumController.delete}" />
-		<h:commandButton value="Cancel" action="#{albumController.cancel}" />
+		<div class="editAlbum">
+
+			<h:outputLabel for="artist" value="Artist: " />
+			<h:inputText id="artist" value="#{albumController.album.artist}" size="50"/>
+
+			<h:outputLabel for="title" value="Title: " />
+			<h:inputText id="title" value="#{albumController.album.title}" size="50"/>
+
+			<h:outputLabel for="year" value="Year: " />
+			<h:inputText id="year" value="#{albumController.album.year}"
+				maxlength="4" size="4" />
+
+		</div>
+
+		<div class="editSongs">
+
+			<h:dataTable value="#{albumController.album.songs}" var="song"
+				rendered="#{not empty albumController.album.songs}"
+				columnClasses="track,disc,title">
+				<h:column styleClass="track">
+					<f:facet name="header">
+						<h:outputText value="Track" />
+					</f:facet>
+					<h:inputText value="#{song.track}" maxlength="2" size="2" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Disc" />
+					</f:facet>
+					<h:inputText value="#{song.disc}" maxlength="2" size="2" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Title" />
+					</f:facet>
+					<h:inputText value="#{song.title}" />
+				</h:column>
+				<h:column>
+					<h:commandButton action="#{albumController.deleteSong(song)}"
+						image="resources/images/delete.png" title="Delete Song"
+						styleClass="smallButton">
+					</h:commandButton>
+				</h:column>
+			</h:dataTable>
+
+		</div>
+
+		<h:commandButton action="#{albumController.addSong}"
+			image="resources/images/new.png" title="Add Song">
+		</h:commandButton>
+
 	</h:form>
-
-	<hr />
-
-	<h:link outcome="index.xhtml" value="Search" />
 
 </h:body>
 </html>
