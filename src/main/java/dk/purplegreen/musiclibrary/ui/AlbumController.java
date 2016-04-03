@@ -83,6 +83,15 @@ public class AlbumController implements Serializable {
 		}
 	}
 
+	public String clearSearch() {
+		try {
+			albums = new ArrayList<>();
+			return "index";
+		} catch (Exception e) {
+			return handleException(e);
+		}
+	}
+
 	public String create() {
 		album = new Album();
 		return "edit";
@@ -143,28 +152,31 @@ public class AlbumController implements Serializable {
 			log.debug("Deleting album: " + album.getArtist() + " " + album.getTitle());
 		}
 
-		try {
-			musicLibraryService.deleteAlbum(album.getId());
+		if (album.getId() != -1) {
 
-			// Album object in search list not same as retrieved object
-			// -possibly not a good idea to override equals for JPA entity?
-			albums.removeIf(new Predicate<Album>() {
-				@Override
-				public boolean test(Album a) {
-					if (a.getId().equals(album.getId())) {
-						if (log.isDebugEnabled()) {
-							log.debug("Deleting album from search list: " + album.getId());
+			try {
+				musicLibraryService.deleteAlbum(album.getId());
+
+				// Album object in search list not same as retrieved object
+				// -possibly not a good idea to override equals for JPA entity?
+				albums.removeIf(new Predicate<Album>() {
+					@Override
+					public boolean test(Album a) {
+						if (a.getId().equals(album.getId())) {
+							if (log.isDebugEnabled()) {
+								log.debug("Deleting album from search list: " + album.getId());
+							}
+							return true;
+						} else {
+							return false;
 						}
-						return true;
-					} else {
-						return false;
 					}
-				}
-			});
-		} catch (Exception e) {
-			return handleException(e);
+				});
+			} catch (Exception e) {
+				return handleException(e);
+			}
 		}
-
+		
 		album = null;
 
 		return "index";

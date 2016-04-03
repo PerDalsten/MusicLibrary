@@ -3,20 +3,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-<head>
-<title><ui:insert name="title">Error</ui:insert></title>
-<h:outputStylesheet library="styles" name="musiclibrary.css" />
-</head>
+<h:head>
+	<title><ui:insert name="title">Error</ui:insert></title>
+	<h:outputStylesheet library="styles" name="musiclibrary.css" />
+</h:head>
 
 <body>
+
+	<h:link outcome="index.xhtml">
+		<h:graphicImage library="images" name="home.png" title="Home" />
+	</h:link>
+
+	<hr />
 
 	<h1>An Error Occurred</h1>
 
 	<h:outputText value="#{albumController.errorMessage}" />
-	
-	<hr/>
-
-	<h:link outcome="index.xhtml" value="Search" />
 
 </body>
 

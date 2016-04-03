@@ -21,8 +21,11 @@
 		<h:outputLabel value="Year" for="year" />
 		<h:inputText id="year" value="#{albumController.year}" maxlength="4"
 			size="4" />
-		<h:commandButton id="search" action="#{albumController.search}"
+		<h:commandButton action="#{albumController.search}"
 			image="resources/images/search.png" title="Search Album">
+		</h:commandButton>
+		<h:commandButton action="#{albumController.clearSearch}"
+			image="resources/images/cancel.png" title="Clear Search">
 		</h:commandButton>
 		<h:link outcome="edit" title="New Album">
 			<f:param name="id" value="-1" />

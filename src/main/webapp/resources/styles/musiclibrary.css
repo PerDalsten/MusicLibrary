@@ -7,6 +7,18 @@ body {
 	color: white;
 }
 
+a:link {
+	color: #00ffff
+}
+
+a:visited {
+	color: #00ccff
+}
+
+a:active {
+	color: #00ffcc
+}
+
 table {
 	border: 0px;
 }
@@ -16,11 +28,13 @@ table {
 	width: auto;
 	max-width: 16px;
 	max-height: 16px;
+	margin-left: 5px;
 }
 
 /* Search */
-form.search label,input {
-	vertical-align: top;
+
+form.search label, form.search input {
+	vertical-align: middle;
 	margin-right: 5px;
 }
 
@@ -74,46 +88,4 @@ td.title input {
 	width: 100%;
 }
 
-a:link {
-	color: #00ffff
-}
 
-a:visited {
-	color: #00ccff
-}
-
-a:active {
-	color: #00ffcc
-}
-
-a.menulink {
-	color: #6699ff;
-	background-color: #660033;
-	text-decoration: none;
-	text-align: left;
-	display: block;
-}
-
-a.menulink:hover {
-	color: #660033;
-	background-color: #6699ff;
-	font-style: italic;
-	text-decoration: none;
-	display: block;
-}
-
-.menugroup {
-	font-style: italic;
-	color: #00ffff
-}
-
-.moddate {
-	font-style: italic;
-	font-size: 75%;
-	color: #ffffff;
-}
-
-.addressentry {
-	font-style: italic;
-	font-weight: bold;
-}
