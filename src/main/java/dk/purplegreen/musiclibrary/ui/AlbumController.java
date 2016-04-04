@@ -86,6 +86,9 @@ public class AlbumController implements Serializable {
 	public String clearSearch() {
 		try {
 			albums = new ArrayList<>();
+			setArtist(null);
+			setTitle(null);
+			setYear(null);
 			return "index";
 		} catch (Exception e) {
 			return handleException(e);
@@ -135,6 +138,8 @@ public class AlbumController implements Serializable {
 		if (album.getId() == -1) {
 			album.setId(null);
 			album = musicLibraryService.createAlbum(album);
+			//Need to set id to new value or -1 (empty) will be shown/passed as query parameter to album.
+			setId(album.getId());
 		} else {
 			try {
 				album = musicLibraryService.updateAlbum(album);
@@ -143,7 +148,7 @@ public class AlbumController implements Serializable {
 			}
 		}
 
-		return "album?id=" + album.getId();
+		return "album";
 	}
 
 	public String delete() {
@@ -176,7 +181,7 @@ public class AlbumController implements Serializable {
 				return handleException(e);
 			}
 		}
-		
+
 		album = null;
 
 		return "index";
@@ -191,7 +196,7 @@ public class AlbumController implements Serializable {
 		if (album.getId() == -1) {
 			result = "index";
 		} else {
-			result = "album?id=" + getId();
+			result = "album";
 		}
 
 		album = null;
@@ -211,7 +216,7 @@ public class AlbumController implements Serializable {
 			album.addSong(new Song("", album.getSongs().size() + 1));
 		}
 
-		return "edit?id=" + album.getId();
+		return "edit";
 	}
 
 	public String deleteSong(Song song) {
@@ -221,7 +226,7 @@ public class AlbumController implements Serializable {
 
 		album.getSongs().remove(song);
 
-		return "edit?id=" + album.getId();
+		return "edit";
 	}
 
 	private String errorMessage;
