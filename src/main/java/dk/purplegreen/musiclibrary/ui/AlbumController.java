@@ -138,11 +138,21 @@ public class AlbumController implements Serializable {
 		if (album.getId() == -1) {
 			album.setId(null);
 			album = musicLibraryService.createAlbum(album);
-			//Need to set id to new value or -1 (empty) will be shown/passed as query parameter to album.
+			// Need to set id to new value or -1 (empty) will be shown/passed as
+			// query parameter to album.
 			setId(album.getId());
 		} else {
 			try {
 				album = musicLibraryService.updateAlbum(album);
+
+				// If the updated album is in the search list, replace it with
+				// updated album
+				for (int i = 0; i < albums.size(); i++) {
+					if (albums.get(i).getId().equals(album.getId())) {
+						albums.set(i, album);
+						break;
+					}
+				}
 			} catch (AlbumNotFoundException e) {
 				return handleException(e);
 			}
