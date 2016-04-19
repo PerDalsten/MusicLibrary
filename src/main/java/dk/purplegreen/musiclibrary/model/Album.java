@@ -9,26 +9,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "ALBUMS")
-@NamedQueries({ @NamedQuery(name = "findAll", query = "SELECT a FROM Album a"),
+@Table(name = "ALBUM")
+@NamedQueries({ @NamedQuery(name = "findAllAlbums", query = "SELECT a FROM Album a"),
 		@NamedQuery(name = "findByArtist", query = "SELECT a FROM Album a WHERE a.artist = :artist"),
 		@NamedQuery(name = "findByTitle", query = "SELECT a FROM Album a WHERE a.title = :title") })
 public class Album {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "ALBUM_ARTIST")
-	private String artist;
-	@Column(name = "ALBUM_TITLE")
+	@ManyToOne
+	@JoinColumn(name = "ARTIST_ID", nullable = false)
+	private Artist artist;
+	@Column(name = "ALBUM_TITLE", nullable = false)
+	@Size(min=1)
 	private String title;
-	@Column(name = "ALBUM_YEAR")
+	@Column(name = "ALBUM_YEAR", nullable = false)
 	private Integer year;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true)
 	@OrderBy("disc, track")
@@ -37,7 +42,7 @@ public class Album {
 	public Album() {
 	}
 
-	public Album(String artist, String title, Integer year) {
+	public Album(Artist artist, String title, Integer year) {
 		this.artist = artist;
 		this.title = title;
 		this.year = year;
@@ -51,11 +56,11 @@ public class Album {
 		this.id = id;
 	}
 
-	public String getArtist() {
+	public Artist getArtist() {
 		return artist;
 	}
 
-	public void setArtist(String artist) {
+	public void setArtist(Artist artist) {
 		this.artist = artist;
 	}
 

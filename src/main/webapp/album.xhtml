@@ -10,7 +10,7 @@
 </h:head>
 
 <f:metadata>
-	<f:viewParam name="id" value="#{albumController.id}" />
+	<f:viewParam name="albumId" value="#{albumController.albumId}" />
 </f:metadata>
 
 <h:body>
@@ -19,14 +19,14 @@
 		<h:graphicImage library="images" name="home.png" title="Home" />
 	</h:link>
 	<h:link outcome="edit" title="Edit Album">
-		<f:param name="id" value="#{albumController.album.id}" />
+		<f:param name="albumId" value="#{albumController.album.id}" />
 		<h:graphicImage library="images" name="edit.png" />
 	</h:link>
 
 	<hr />
 
 	<h1>
-		<h:outputText value="#{albumController.album.artist}" />
+		<h:outputText value="#{albumController.album.artist.name}" />
 		-
 		<h:outputText value="#{albumController.album.title}" />
 		(<h:outputText value="#{albumController.album.year}" />)

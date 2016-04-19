@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<title><ui:insert name="title">MusicLibrary</ui:insert></title>
+	<h:outputStylesheet library="styles" name="musiclibrary.css" />
+</h:head>
+
+<f:metadata>
+	<f:viewParam name="artistId" value="#{albumController.artistId}" />
+</f:metadata>
+
+<h:body>
+	
+	<h:form class="edit">
+
+		<h:commandButton action="#{albumController.saveArtist}"
+			image="resources/images/save.png" title="Save Artist">
+		</h:commandButton>
+		<h:commandButton action="#{albumController.deleteArtist}"
+			image="resources/images/delete.png" title="Delete Artist">
+		</h:commandButton>
+		<h:commandButton action="#{albumController.cancelEditArtist}"
+			image="resources/images/cancel.png" title="Cancel">
+		</h:commandButton>
+
+		<hr />
+		
+		<div class="editAlbum">
+			<h:outputLabel for="artist" value="Artist: " />
+			<h:inputText id="artist" value="#{albumController.artistName}"
+				size="50" />		
+		</div>
+		
+	</h:form>
+
+</h:body>
+</html>

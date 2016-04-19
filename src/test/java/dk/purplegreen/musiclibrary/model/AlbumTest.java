@@ -20,8 +20,11 @@ public class AlbumTest {
 		EntityManager em = TestEntityManagerFactory.getEntityManager();
 		em.getTransaction().begin();
 
+		Artist artist = new Artist("Thin Lizzy");
+		em.persist(artist);
+
 		Album album = new Album();
-		album.setArtist("Thin Lizzy");
+		album.setArtist(artist);
 		album.setTitle("Chinatown");
 		album.setYear(1990);
 
@@ -47,14 +50,14 @@ public class AlbumTest {
 		album = em.find(Album.class, album.getId());
 		em.close();
 
-		assertEquals("Wrong artist", "Thin Lizzy", album.getArtist());
+		assertEquals("Wrong artist", "Thin Lizzy", album.getArtist().getName());
 		assertEquals("Wrong number of songs", 2, album.getSongs().size());
 	}
 
 	@Test
 	public void testFindAllAlbums() {
 		EntityManager em = TestEntityManagerFactory.getEntityManager();
-		TypedQuery<Album> query = em.createNamedQuery("findAll", Album.class);
+		TypedQuery<Album> query = em.createNamedQuery("findAllAlbums", Album.class);
 		List<Album> result = query.getResultList();
 		em.close();
 		assertTrue("To few albums", result.size() >= 2);
@@ -63,14 +66,17 @@ public class AlbumTest {
 	@Test
 	public void testFindByArtist() {
 		EntityManager em = TestEntityManagerFactory.getEntityManager();
+
+		Artist rh = em.find(Artist.class, TestEntityManagerFactory.getRoyalHuntId());
+
 		TypedQuery<Album> query = em.createNamedQuery("findByArtist", Album.class);
-		query.setParameter("artist", "Royal Hunt");
+		query.setParameter("artist", rh);
 
 		List<Album> result = query.getResultList();
 		em.close();
 
 		assertEquals("Wrong number of albums", result.size(), 1);
-		assertEquals("Wrong artist", "Royal Hunt", result.get(0).getArtist());
+		assertEquals("Wrong artist", "Royal Hunt", result.get(0).getArtist().getName());
 		assertEquals("Wrong number of songs", result.get(0).getSongs().size(), 2);
 	}
 
@@ -84,7 +90,7 @@ public class AlbumTest {
 		em.close();
 
 		assertEquals("Wrong number of albums", result.size(), 1);
-		assertEquals("Wrong artist", "Royal Hunt", result.get(0).getArtist());
+		assertEquals("Wrong artist", "Royal Hunt", result.get(0).getArtist().getName());
 		assertEquals("Wrong number of songs", result.get(0).getSongs().size(), 2);
 	}
 
@@ -93,7 +99,10 @@ public class AlbumTest {
 
 		EntityManager em = TestEntityManagerFactory.getEntityManager();
 
-		Album album = new Album("Testament", "Practice What You Preach", 1989);
+		Artist artist = new Artist("Testament");
+		em.persist(artist);
+
+		Album album = new Album(artist, "Practice What You Preach", 1989);
 		album.addSong(new Song("Practice What You Preach", 1));
 		album.addSong(new Song("Perilouz Nation", 2));
 		album.addSong(new Song("Bogus Song", 3));
@@ -105,7 +114,7 @@ public class AlbumTest {
 
 		album = em.find(Album.class, album.getId());
 
-		assertEquals("Wrong artist", "Testament", album.getArtist());
+		assertEquals("Wrong artist", "Testament", album.getArtist().getName());
 		assertEquals("Wrong number of songs", 3, album.getSongs().size());
 		assertEquals("Wrong first song", "Practice What You Preach", album.getSongs().get(0).getTitle());
 		assertEquals("Wrong mispelled song", "Perilouz Nation", album.getSongs().get(1).getTitle());

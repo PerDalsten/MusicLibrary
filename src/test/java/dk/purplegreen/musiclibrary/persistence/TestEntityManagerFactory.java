@@ -5,6 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import dk.purplegreen.musiclibrary.model.Album;
+import dk.purplegreen.musiclibrary.model.Artist;
 import dk.purplegreen.musiclibrary.model.Song;
 
 public class TestEntityManagerFactory {
@@ -31,8 +32,11 @@ public class TestEntityManagerFactory {
 
 		em.getTransaction().begin();
 
+		Artist artist = new Artist("The Beatles");
+		em.persist(artist);
+
 		Album album = new Album();
-		album.setArtist("The Beatles");
+		album.setArtist(artist);
 		album.setTitle("Abbey Road");
 		album.setYear(1969);
 
@@ -53,8 +57,10 @@ public class TestEntityManagerFactory {
 
 		em.persist(album);
 
+		artist = new Artist("AC/DC");
+		em.persist(artist);
 		album = new Album();
-		album.setArtist("AC/DC");
+		album.setArtist(artist);
 		album.setTitle("For Those About to Rock We Salute You");
 		album.setYear(1981);
 
@@ -76,8 +82,10 @@ public class TestEntityManagerFactory {
 		em.persist(album);
 
 		// Create last
+		artist = new Artist("Royal Hunt");
+		em.persist(artist);
 		album = new Album();
-		album.setArtist("Royal Hunt");
+		album.setArtist(artist);
 		album.setTitle("Paradox");
 		album.setYear(1997);
 
@@ -99,15 +107,21 @@ public class TestEntityManagerFactory {
 		em.persist(album);
 		em.getTransaction().commit();
 
-		royalHuntId = album.getId();
+		royalHuntId = artist.getId();
+		paradoxId = album.getId();
 
 		isDataCreated = true;
 	}
 
 	private static Integer royalHuntId;
+	private static Integer paradoxId;
 
 	public static Integer getRoyalHuntId() {
 		return royalHuntId;
+	}
+
+	public static Integer getParadoxId() {
+		return paradoxId;
 	}
 
 }

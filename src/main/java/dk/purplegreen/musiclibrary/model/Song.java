@@ -8,20 +8,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "SONGS")
+@Table(name = "SONG")
 public class Song {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "SONG_TITLE")
+	@Column(name = "SONG_TITLE", nullable = false)
+	@Size(min=1)
 	private String title;
 	private Integer track;
 	private Integer disc;
 	@ManyToOne
-	@JoinColumn(name = "ALBUM_ID")
+	@JoinColumn(name = "ALBUM_ID", nullable = false)
 	private Album album;
 
 	public Song() {

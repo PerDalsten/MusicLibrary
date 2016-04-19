@@ -46,12 +46,12 @@ public class AlbumDAOTest {
 			}
 		});
 
-		Album album = albumDAO.find(TestEntityManagerFactory.getRoyalHuntId());
+		Album album = albumDAO.find(TestEntityManagerFactory.getParadoxId());
 
 		testEM.close();
 
 		assertNotNull("Album is null", album);
-		assertEquals("Wrong artist", "Royal Hunt", album.getArtist());
+		assertEquals("Wrong artist", "Royal Hunt", album.getArtist().getName());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -74,7 +74,7 @@ public class AlbumDAOTest {
 		testEM.close();
 
 		assertEquals("Wrong number of results", 1, albums.size());
-		assertEquals("Wrong artist", "The Beatles", albums.get(0).getArtist());
+		assertEquals("Wrong artist", "The Beatles", albums.get(0).getArtist().getName());
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class AlbumDAOTest {
 		});
 
 		List<Album> albums = albumDAO.find(null, null, null);
-		assertEquals("Wrong artist", "AC/DC", albums.get(0).getArtist());
+		assertEquals("Wrong artist", "AC/DC", albums.get(0).getArtist().getName());
 		
 		
 		testEM.close();

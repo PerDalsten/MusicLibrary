@@ -6,5 +6,6 @@
 		<jta-data-source>jdbc/MusicLibraryDS</jta-data-source>
 		<class>dk.purplegreen.musiclibrary.model.Album</class>
 		<class>dk.purplegreen.musiclibrary.model.Song</class>
+		<class>dk.purplegreen.musiclibrary.model.Artist</class>
 	</persistence-unit>
 </persistence>
