@@ -13,6 +13,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import dk.purplegreen.musiclibrary.model.Album;
+import dk.purplegreen.musiclibrary.model.Artist;
 
 @Dependent
 public class AlbumDAO {
@@ -38,7 +39,7 @@ public class AlbumDAO {
 	}
 
 	public List<Album> getAllAlbums() {
-		TypedQuery<Album> query = em.createNamedQuery("findAll", Album.class);
+		TypedQuery<Album> query = em.createNamedQuery("findAllAlbums", Album.class);
 		return query.getResultList();
 	}
 
@@ -51,7 +52,7 @@ public class AlbumDAO {
 		List<Predicate> predicates = new ArrayList<Predicate>();
 
 		if (artist != null && !artist.isEmpty()) {
-			predicates.add(cb.like(cb.lower(album.get("artist")), "%" + artist.toLowerCase() + "%"));
+			predicates.add(cb.like(cb.lower(album.get("artist").get("name")), "%" + artist.toLowerCase() + "%"));
 		}
 		if (title != null && !title.isEmpty()) {
 			predicates.add(cb.like(cb.lower(album.get("title")), "%" + title.toLowerCase() + "%"));
@@ -61,8 +62,14 @@ public class AlbumDAO {
 		}
 
 		cq.select(album).where(predicates.toArray(new Predicate[predicates.size()]));
-		cq.orderBy(cb.asc(album.get("artist")), cb.asc(album.get("title")));
+		cq.orderBy(cb.asc(album.get("artist").get("name")), cb.asc(album.get("title")));
 
 		return em.createQuery(cq).getResultList();
+	}
+
+	public List<Album> findByArtist(Artist artist) {
+		TypedQuery<Album> query = em.createNamedQuery("findByArtist", Album.class);
+		query.setParameter("artist", artist);
+		return query.getResultList();
 	}
 }

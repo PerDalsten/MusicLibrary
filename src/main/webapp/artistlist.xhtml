@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<title><ui:insert name="title">MusicLibrary</ui:insert></title>
+	<h:outputStylesheet library="styles" name="musiclibrary.css" />
+</h:head>
+
+<h:body>
+
+	<h:form>
+		<h:commandButton action="#{albumController.artistsOK}"
+			image="resources/images/ok.png" title="OK">
+		</h:commandButton>
+	</h:form>
+
+	<hr />
+
+	<h:panelGroup rendered="#{not empty albumController.artists}">
+		<ul>
+			<ui:repeat value="#{albumController.artists}" var="artist">
+				<li><h:link value="#{artist.name}" outcome="artist.xhtml">
+						<f:param name="artistId" value="#{artist.id}" />
+					</h:link></li>
+			</ui:repeat>
+		</ul>
+	</h:panelGroup>
+
+</h:body>
+
+</html>

@@ -9,35 +9,43 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @Entity
-@Table(name = "ALBUMS")
-@NamedQueries({ @NamedQuery(name = "findAll", query = "SELECT a FROM Album a"),
+@Table(name = "ALBUM")
+@NamedQueries({ @NamedQuery(name = "findAllAlbums", query = "SELECT a FROM Album a"),
 		@NamedQuery(name = "findByArtist", query = "SELECT a FROM Album a WHERE a.artist = :artist"),
 		@NamedQuery(name = "findByTitle", query = "SELECT a FROM Album a WHERE a.title = :title") })
 public class Album {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "ALBUM_ARTIST")
-	private String artist;
-	@Column(name = "ALBUM_TITLE")
+	@ManyToOne
+	@JoinColumn(name = "ARTIST_ID", nullable = false)
+	private Artist artist;
+	@Column(name = "ALBUM_TITLE", nullable = false)
 	private String title;
-	@Column(name = "ALBUM_YEAR")
+	@Column(name = "ALBUM_YEAR", nullable = false)
 	private Integer year;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true)
 	@OrderBy("disc, track")
 	private List<Song> songs = new ArrayList<Song>();
 
+	private final static Logger log = LogManager.getLogger(Album.class);
+
 	public Album() {
 	}
 
-	public Album(String artist, String title, Integer year) {
+	public Album(Artist artist, String title, Integer year) {
 		this.artist = artist;
 		this.title = title;
 		this.year = year;
@@ -51,11 +59,11 @@ public class Album {
 		this.id = id;
 	}
 
-	public String getArtist() {
+	public Artist getArtist() {
 		return artist;
 	}
 
-	public void setArtist(String artist) {
+	public void setArtist(Artist artist) {
 		this.artist = artist;
 	}
 
@@ -84,5 +92,34 @@ public class Album {
 			song.setAlbum(this);
 		}
 		getSongs().add(song);
+	}
+
+	// hashCode and equals implemented to support collections and JSF - do not
+	// use on non-persisted objects
+	@Override
+	public int hashCode() {
+		if (id == null) {
+			log.warn("hashCode() called for non-persisted object");
+			return super.hashCode();
+		} else {
+			return id.hashCode();
+		}
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (id == null) {
+			log.warn("equals() called for non-persisted object");
+			return super.equals(obj);
+		}
+
+		if (obj == null)
+			return false;
+
+		if (getClass().equals(obj.getClass())) {
+			return id.equals(((Album) obj).getId());
+		}
+
+		return false;
 	}
 }

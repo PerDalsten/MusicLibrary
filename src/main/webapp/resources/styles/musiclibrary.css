@@ -52,9 +52,22 @@ div.editAlbum input{
 	display: block;
 }
 
+div.editAlbumArtist {
+	display: block;	
+}
+
+div.editAlbumArtist img {	
+	vertical-align: middle;	
+}
+
 div.editSongs {
 	margin-bottom: 20px;
 }
+
+div.editArtist input{
+	display: block;
+}
+
 
 td.disc {
 	width: 40px;

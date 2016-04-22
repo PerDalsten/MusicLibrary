@@ -5,6 +5,7 @@
 	<persistence-unit name="MusicLibraryTest">
 		<class>dk.purplegreen.musiclibrary.model.Album</class>
 		<class>dk.purplegreen.musiclibrary.model.Song</class>
+		<class>dk.purplegreen.musiclibrary.model.Artist</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
 			<property name="javax.persistence.jdbc.url"

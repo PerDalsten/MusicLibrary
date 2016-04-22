@@ -11,17 +11,17 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "SONGS")
+@Table(name = "SONG")
 public class Song {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "SONG_TITLE")
+	@Column(name = "SONG_TITLE", nullable = false)
 	private String title;
 	private Integer track;
 	private Integer disc;
 	@ManyToOne
-	@JoinColumn(name = "ALBUM_ID")
+	@JoinColumn(name = "ALBUM_ID", nullable = false)
 	private Album album;
 
 	public Song() {
@@ -69,8 +69,9 @@ public class Song {
 		this.disc = disc;
 	}
 
-	@XmlTransient // Avoid infinite recursion from bi-directional relationship
-					// when serializing to JSON
+	// Avoid infinite recursion from bi-directional relationship
+	// when serializing to JSON
+	@XmlTransient
 	public Album getAlbum() {
 		return album;
 	}
