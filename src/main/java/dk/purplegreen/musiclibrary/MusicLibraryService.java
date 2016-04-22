@@ -81,4 +81,8 @@ public class MusicLibraryService {
 	public void deleteArtist(Integer id) throws ArtistNotFoundException {
 		artistDAO.delete(getArtist(id));
 	}
+	
+	public List<Album> getAlbums(Artist artist) {
+		return albumDAO.findByArtist(artist);
+	}
 }

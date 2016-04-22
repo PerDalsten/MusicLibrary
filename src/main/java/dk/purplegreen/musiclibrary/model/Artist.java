@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Entity
 @Table(name = "ARTIST")
@@ -20,8 +22,9 @@ public class Artist {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "ARTIST_NAME", nullable = false)
-	@Size(min=1)
 	private String name;
+
+	private final static Logger log = LogManager.getLogger(Artist.class);
 
 	public Artist() {
 	}
@@ -44,5 +47,33 @@ public class Artist {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public int hashCode() {
+
+		if (id == null) {
+			log.warn("hashCode() called for non-persisted object");
+			return super.hashCode();
+		} else {
+			return id.hashCode();
+		}
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (id == null) {
+			log.warn("equals() called for non-persisted object");
+			return super.equals(obj);
+		}
+
+		if (obj == null)
+			return false;
+
+		if (getClass().equals(obj.getClass())) {
+			return id.equals(((Artist) obj).getId());
+		}
+
+		return false;
 	}
 }

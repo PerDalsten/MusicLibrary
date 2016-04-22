@@ -20,7 +20,7 @@
 		<h:commandButton action="#{albumController.save}"
 			image="resources/images/save.png" title="Save Album">
 		</h:commandButton>
-		<h:commandButton action="#{albumController.delete}"
+		<h:commandButton rendered="#{albumController.album.id > 0}" action="#{albumController.delete}"
 			image="resources/images/delete.png" title="Delete Album">
 		</h:commandButton>
 		<h:commandButton action="#{albumController.cancel}"
@@ -33,9 +33,10 @@
 
 			<h:outputLabel for="artist" value="Artist: " />
 			<div class="editAlbumArtist">
-				<h:selectOneMenu value="#{albumController.albumArtistId}">
+				<h:selectOneMenu value="#{albumController.album.artist}" converter="#{artistConverter}">
+				
 					<f:selectItems value="#{albumController.artists}" var="artist"
-						itemLabel="#{artist.name}" itemValue="#{artist.id}" />
+						itemLabel="#{artist.name}" itemValue="#{artist}" />
 				</h:selectOneMenu>
 				<h:link outcome="artist" title="New Artist">
 					<f:param name="artistId" value="-1" />

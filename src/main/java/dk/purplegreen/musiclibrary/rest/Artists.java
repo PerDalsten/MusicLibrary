@@ -20,10 +20,8 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dk.purplegreen.musiclibrary.AlbumNotFoundException;
 import dk.purplegreen.musiclibrary.ArtistNotFoundException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
-import dk.purplegreen.musiclibrary.model.Album;
 import dk.purplegreen.musiclibrary.model.Artist;
 
 @Path("/artists")
@@ -38,8 +36,7 @@ public class Artists {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAlbum(@PathParam("id") Integer id) {
-
+	public Response getArtist(@PathParam("id") Integer id) {
 		try {
 			return Response.ok(service.getArtist(id)).build();
 		} catch (ArtistNotFoundException e) {
@@ -52,12 +49,11 @@ public class Artists {
 	public Response getArtists() {
 		return Response.ok(service.getArtists()).build();
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createArtist(Artist artist) {
-
 		artist.setId(null);
 		try {
 			artist = service.createArtist(artist);
@@ -65,23 +61,21 @@ public class Artists {
 		} catch (URISyntaxException e) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
-		
+
 	}
 
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateAlbum(@PathParam("id") Integer id, Artist artist) {
-
+	public Response updateArtist(@PathParam("id") Integer id, Artist artist) {
 		artist.setId(id);
-
 		try {
 			artist = service.updateArtist(artist);
 			return Response.ok(artist).build();
 		} catch (ArtistNotFoundException e) {
 			return Response.status(Status.NOT_FOUND).build();
-		} 
+		}
 	}
 
 	@DELETE
@@ -95,4 +89,15 @@ public class Artists {
 		}
 	}
 
+	@GET
+	@Path("/{id}/albums")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getArtistAlbums(@PathParam("id") Integer id) {
+
+		try {
+			return Response.ok(service.getAlbums(service.getArtist(id))).build();
+		} catch (ArtistNotFoundException e) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+	}
 }

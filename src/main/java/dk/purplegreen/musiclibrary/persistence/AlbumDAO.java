@@ -13,6 +13,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import dk.purplegreen.musiclibrary.model.Album;
+import dk.purplegreen.musiclibrary.model.Artist;
 
 @Dependent
 public class AlbumDAO {
@@ -64,5 +65,11 @@ public class AlbumDAO {
 		cq.orderBy(cb.asc(album.get("artist").get("name")), cb.asc(album.get("title")));
 
 		return em.createQuery(cq).getResultList();
+	}
+
+	public List<Album> findByArtist(Artist artist) {
+		TypedQuery<Album> query = em.createNamedQuery("findByArtist", Album.class);
+		query.setParameter("artist", artist);
+		return query.getResultList();
 	}
 }

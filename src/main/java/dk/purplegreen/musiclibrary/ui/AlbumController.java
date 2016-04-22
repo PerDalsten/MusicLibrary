@@ -3,7 +3,7 @@ package dk.purplegreen.musiclibrary.ui;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.ListIterator;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -34,15 +34,15 @@ public class AlbumController implements Serializable {
 	private String albumArtist;
 	private String albumTitle;
 	private Integer albumYear;
+	private List<Album> albums = new ArrayList<>();
 
 	// Album edit
 	private Integer albumId;
-	private List<Album> albums = new ArrayList<>();
 	private Album album;
 
 	// Artist edit
 	private Integer artistId;
-	private String artistName;
+	private Artist artist;
 
 	public String getAlbumArtist() {
 		return albumArtist;
@@ -81,14 +81,6 @@ public class AlbumController implements Serializable {
 
 	public List<Album> getAlbums() {
 		return albums;
-	}
-
-	public Integer getAlbumArtistId() throws AlbumNotFoundException {
-		return getAlbum().getArtist() != null ? getAlbum().getArtist().getId() : null;
-	}
-
-	public void setAlbumArtistId(Integer artistId) throws AlbumNotFoundException {
-		getAlbum().getArtist().setId(artistId);
 	}
 
 	public String search() {
@@ -158,17 +150,19 @@ public class AlbumController implements Serializable {
 				album.setId(null);
 				album = musicLibraryService.createAlbum(album);
 				// Need to set id to new value or -1 (empty) will be
-				// shown/passed as
-				// query parameter to album.
+				// shown/passed as query parameter to album.
 				setAlbumId(album.getId());
 			} else {
 				album = musicLibraryService.updateAlbum(album);
 
 				// If the updated album is in the search list, replace it with
 				// updated album
-				for (int i = 0; i < albums.size(); i++) {
-					if (albums.get(i).getId().equals(album.getId())) {
-						albums.set(i, album);
+				for (ListIterator<Album> iter = albums.listIterator(); iter.hasNext();) {
+					if (iter.next().equals(album)) {
+						iter.set(album);
+						if (log.isDebugEnabled()) {
+							log.debug("Replacing album in search list");
+						}
 						break;
 					}
 				}
@@ -186,28 +180,10 @@ public class AlbumController implements Serializable {
 			log.debug("Deleting album: " + album.getArtist() + " " + album.getTitle());
 		}
 
-		if (album.getId() != -1) {
-			try {
-				musicLibraryService.deleteAlbum(album.getId());
-
-				// Album object in search list not same as retrieved object
-				// -possibly not a good idea to override equals for JPA entity?
-				albums.removeIf(new Predicate<Album>() {
-					@Override
-					public boolean test(Album a) {
-						if (a.getId().equals(album.getId())) {
-							if (log.isDebugEnabled()) {
-								log.debug("Deleting album from search list: " + album.getId());
-							}
-							return true;
-						} else {
-							return false;
-						}
-					}
-				});
-			} catch (Exception e) {
-				return handleException(e);
-			}
+		try {
+			musicLibraryService.deleteAlbum(album.getId());
+		} catch (Exception e) {
+			return handleException(e);
 		}
 
 		album = null;
@@ -265,20 +241,6 @@ public class AlbumController implements Serializable {
 		return musicLibraryService.getArtists();
 	}
 
-	public String getArtistName() throws ArtistNotFoundException {
-
-		if (artistName == null) {
-			if (getArtistId() != null && -1 != getArtistId()) {
-				artistName = musicLibraryService.getArtist(getArtistId()).getName();
-			}
-		}
-		return artistName;
-	}
-
-	public void setArtistName(String artistName) {
-		this.artistName = artistName;
-	}
-
 	public Integer getArtistId() {
 		return artistId;
 	}
@@ -287,39 +249,63 @@ public class AlbumController implements Serializable {
 		this.artistId = artistId;
 	}
 
+	public Artist getArtist() throws ArtistNotFoundException {
+
+		try {
+			if (artist == null || !artist.getId().equals(getArtistId())) {
+				if (-1 == getArtistId()) {
+
+					if (log.isDebugEnabled()) {
+						log.debug("Creating new artist");
+					}
+
+					artist = new Artist();
+					artist.setId(-1);
+
+				} else {
+					if (log.isDebugEnabled()) {
+						log.debug("Reading artist with id: " + getArtistId());
+					}
+
+					artist = musicLibraryService.getArtist(getArtistId());
+				}
+			} else {
+				if (log.isDebugEnabled()) {
+					log.debug("Already has copy of artist with id: " + getArtistId());
+				}
+			}
+		} catch (ArtistNotFoundException e) {
+			log.error("Exception caught in getArtist", e);
+			throw e;
+		}
+		return artist;
+
+	}
+
 	public String saveArtist() throws ArtistNotFoundException {
 
 		if (log.isDebugEnabled()) {
-			log.debug("Saving artist: " + getArtistId() + " " + getArtistName());
+			log.debug("Saving artist: " + artist.getId() + " " + artist.getName());
 
 		}
-		Artist artist = new Artist();
 
-		artist.setName(getArtistName());
-		setArtistName(null);
-
-		if (getArtistId() == -1) {
+		if (artist.getId() == -1) {
 			musicLibraryService.createArtist(artist);
 			return "edit";
 		} else {
-			artist.setId(getArtistId());
 			musicLibraryService.updateArtist(artist);
 			return "artistlist";
 		}
 	}
 
 	public String deleteArtist() throws ArtistNotFoundException {
-		setArtistName(null);
-		if (getArtistId() == -1) {
-			return "edit";
-		} else {
-			musicLibraryService.deleteArtist(getArtistId());
-			return "artistlist";
-		}
+
+		musicLibraryService.deleteArtist(getArtistId());
+		return "artistlist";
 	}
 
 	public String cancelEditArtist() {
-		setArtistName(null);
+
 		if (getArtistId() == -1) {
 			return "edit";
 		} else {

@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
@@ -18,7 +17,6 @@ public class Song {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "SONG_TITLE", nullable = false)
-	@Size(min=1)
 	private String title;
 	private Integer track;
 	private Integer disc;
@@ -71,8 +69,9 @@ public class Song {
 		this.disc = disc;
 	}
 
-	@XmlTransient // Avoid infinite recursion from bi-directional relationship
-					// when serializing to JSON
+	// Avoid infinite recursion from bi-directional relationship
+	// when serializing to JSON
+	@XmlTransient
 	public Album getAlbum() {
 		return album;
 	}

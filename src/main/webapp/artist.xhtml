@@ -14,13 +14,14 @@
 </f:metadata>
 
 <h:body>
-	
+
 	<h:form class="edit">
 
 		<h:commandButton action="#{albumController.saveArtist}"
 			image="resources/images/save.png" title="Save Artist">
 		</h:commandButton>
-		<h:commandButton action="#{albumController.deleteArtist}"
+		<h:commandButton rendered="#{albumController.artistId > 0}"
+			action="#{albumController.deleteArtist}"
 			image="resources/images/delete.png" title="Delete Artist">
 		</h:commandButton>
 		<h:commandButton action="#{albumController.cancelEditArtist}"
@@ -28,13 +29,13 @@
 		</h:commandButton>
 
 		<hr />
-		
+
 		<div class="editAlbum">
 			<h:outputLabel for="artist" value="Artist: " />
-			<h:inputText id="artist" value="#{albumController.artistName}"
-				size="50" />		
+			<h:inputText id="artist" value="#{albumController.artist.name}"
+				size="50" />
 		</div>
-		
+
 	</h:form>
 
 </h:body>

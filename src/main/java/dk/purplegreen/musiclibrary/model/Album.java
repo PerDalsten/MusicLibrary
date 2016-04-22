@@ -16,7 +16,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Entity
 @Table(name = "ALBUM")
@@ -31,13 +33,14 @@ public class Album {
 	@JoinColumn(name = "ARTIST_ID", nullable = false)
 	private Artist artist;
 	@Column(name = "ALBUM_TITLE", nullable = false)
-	@Size(min=1)
 	private String title;
 	@Column(name = "ALBUM_YEAR", nullable = false)
 	private Integer year;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true)
 	@OrderBy("disc, track")
 	private List<Song> songs = new ArrayList<Song>();
+
+	private final static Logger log = LogManager.getLogger(Album.class);
 
 	public Album() {
 	}
@@ -89,5 +92,34 @@ public class Album {
 			song.setAlbum(this);
 		}
 		getSongs().add(song);
+	}
+
+	// hashCode and equals implemented to support collections and JSF - do not
+	// use on non-persisted objects
+	@Override
+	public int hashCode() {
+		if (id == null) {
+			log.warn("hashCode() called for non-persisted object");
+			return super.hashCode();
+		} else {
+			return id.hashCode();
+		}
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (id == null) {
+			log.warn("equals() called for non-persisted object");
+			return super.equals(obj);
+		}
+
+		if (obj == null)
+			return false;
+
+		if (getClass().equals(obj.getClass())) {
+			return id.equals(((Album) obj).getId());
+		}
+
+		return false;
 	}
 }
