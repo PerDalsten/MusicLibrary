@@ -27,7 +27,6 @@ public class ArtistConverter implements Converter {
 	@Override
 	public Object getAsObject(FacesContext fc, UIComponent component, String id) {
 		try {
-
 			return musicLibraryService.getArtist(Integer.parseInt(id));
 		} catch (NumberFormatException | ArtistNotFoundException e) {
 			log.error("Exception caught in Artist converter", e);
@@ -39,7 +38,8 @@ public class ArtistConverter implements Converter {
 	public String getAsString(FacesContext fc, UIComponent component, Object artist) {
 
 		if (artist != null && artist.getClass().equals(Artist.class)) {
-			return ((Artist) artist).getId().toString();
+			Integer id = ((Artist) artist).getId();
+			return id != null && id > 0 ? id.toString() : null;
 		} else {
 			return null;
 		}

@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import dk.purplegreen.musiclibrary.ArtistNotFoundException;
+import dk.purplegreen.musiclibrary.InvalidArtistException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Artist;
 
@@ -60,8 +61,9 @@ public class Artists {
 			return Response.created(new URI("artist/" + artist.getId())).entity(artist).build();
 		} catch (URISyntaxException e) {
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		} catch (InvalidArtistException e) {
+			return Response.status(Status.BAD_REQUEST).build();
 		}
-
 	}
 
 	@PUT
@@ -75,6 +77,8 @@ public class Artists {
 			return Response.ok(artist).build();
 		} catch (ArtistNotFoundException e) {
 			return Response.status(Status.NOT_FOUND).build();
+		} catch (InvalidArtistException e) {
+			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}
 

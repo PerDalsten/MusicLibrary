@@ -23,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 import dk.purplegreen.musiclibrary.AlbumNotFoundException;
 import dk.purplegreen.musiclibrary.ArtistNotFoundException;
+import dk.purplegreen.musiclibrary.InvalidArtistException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
 
@@ -72,6 +73,8 @@ public class Albums {
 		} catch (ArtistNotFoundException e) {
 			log.error("Exception caught in createAlbum", e);
 			return Response.status(Status.NOT_FOUND).build();
+		} catch (InvalidArtistException e) {
+			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}
 
@@ -91,6 +94,8 @@ public class Albums {
 		} catch (ArtistNotFoundException e) {
 			log.error("Exception caught in createAlbum", e);
 			return Response.status(Status.NOT_FOUND).build();
+		} catch (InvalidArtistException e) {
+			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}
 

@@ -35,4 +35,6 @@ URL's
 All: http://localhost:9080/MusicLibrary/rest/albums
 By ID: http://localhost:9080/MusicLibrary/rest/albums/42
 Search: http://localhost:9080/MusicLibrary/rest/albums?artist=Thin Lizzy&title=&year=
+By artist: http://localhost:9080/MusicLibrary/rest/artist/83/albums
+
 UI:http://localhost:9080/MusicLibrary/albums/index.xhtml (or just http://localhost:9080/MusicLibrary)

@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import dk.purplegreen.musiclibrary.AlbumNotFoundException;
 import dk.purplegreen.musiclibrary.ArtistNotFoundException;
+import dk.purplegreen.musiclibrary.InvalidArtistException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
 import dk.purplegreen.musiclibrary.model.Artist;
@@ -167,7 +168,7 @@ public class AlbumController implements Serializable {
 					}
 				}
 			}
-		} catch (AlbumNotFoundException | ArtistNotFoundException e) {
+		} catch (AlbumNotFoundException | ArtistNotFoundException | InvalidArtistException e) {
 			return handleException(e);
 		}
 
@@ -282,19 +283,23 @@ public class AlbumController implements Serializable {
 
 	}
 
-	public String saveArtist() throws ArtistNotFoundException {
+	public String saveArtist() {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Saving artist: " + artist.getId() + " " + artist.getName());
-
 		}
 
-		if (artist.getId() == -1) {
-			musicLibraryService.createArtist(artist);
-			return "edit";
-		} else {
-			musicLibraryService.updateArtist(artist);
-			return "artistlist";
+		try {
+
+			if (artist.getId() == -1) {
+				musicLibraryService.createArtist(artist);
+				return "edit";
+			} else {
+				musicLibraryService.updateArtist(artist);
+				return "artistlist";
+			}
+		} catch (ArtistNotFoundException | InvalidArtistException e) {
+			return handleException(e);
 		}
 	}
 

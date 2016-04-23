@@ -17,6 +17,10 @@ public class MusicLibraryService {
 	private AlbumDAO albumDAO;
 	@Inject
 	private ArtistDAO artistDAO;
+	@Inject 
+	private ArtistValidator artistValidator;
+	@Inject 
+	private AlbumValidator albumValidator;
 
 	public Album getAlbum(Integer id) throws AlbumNotFoundException {
 		Album result = albumDAO.find(id);
@@ -33,17 +37,19 @@ public class MusicLibraryService {
 		return albumDAO.find(artist, title, year);
 	}
 
-	public Album createAlbum(Album album) throws ArtistNotFoundException {
+	public Album createAlbum(Album album) throws ArtistNotFoundException, InvalidArtistException {
 		album.setId(null);
 		album.setArtist(getArtist(album.getArtist().getId()));
 		attachSongs(album);
+		albumValidator.validate(album);
 		return albumDAO.save(album);
 	}
 
-	public Album updateAlbum(Album album) throws AlbumNotFoundException, ArtistNotFoundException {
+	public Album updateAlbum(Album album) throws AlbumNotFoundException, ArtistNotFoundException, InvalidArtistException {
 		getAlbum(album.getId());
 		album.setArtist(getArtist(album.getArtist().getId()));
 		attachSongs(album);
+		albumValidator.validate(album);
 		return albumDAO.save(album);
 	}
 
@@ -68,13 +74,15 @@ public class MusicLibraryService {
 		return artistDAO.getAllArtists();
 	}
 
-	public Artist createArtist(Artist artist) {
+	public Artist createArtist(Artist artist) throws InvalidArtistException {
 		artist.setId(null);
+		artistValidator.validate(artist);
 		return artistDAO.save(artist);
 	}
 
-	public Artist updateArtist(Artist artist) throws ArtistNotFoundException {
+	public Artist updateArtist(Artist artist) throws ArtistNotFoundException, InvalidArtistException {
 		getArtist(artist.getId());
+		artistValidator.validate(artist);
 		return artistDAO.save(artist);
 	}
 
