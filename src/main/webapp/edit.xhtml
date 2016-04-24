@@ -17,13 +17,13 @@
 
 	<h:form class="edit">
 
-		<h:commandButton action="#{albumController.save}"
+		<h:commandButton action="#{albumController.saveAlbum}"
 			image="resources/images/save.png" title="Save Album">
 		</h:commandButton>
-		<h:commandButton rendered="#{albumController.album.id > 0}" action="#{albumController.delete}"
+		<h:commandButton rendered="#{albumController.album.id > 0}" action="#{albumController.deleteAlbum}"
 			image="resources/images/delete.png" title="Delete Album">
 		</h:commandButton>
-		<h:commandButton action="#{albumController.cancel}"
+		<h:commandButton action="#{albumController.cancelEditAlbum}"
 			image="resources/images/cancel.png" title="Cancel">
 		</h:commandButton>
 

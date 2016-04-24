@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import dk.purplegreen.musiclibrary.AlbumNotFoundException;
 import dk.purplegreen.musiclibrary.ArtistNotFoundException;
+import dk.purplegreen.musiclibrary.InvalidAlbumException;
 import dk.purplegreen.musiclibrary.InvalidArtistException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
@@ -141,7 +142,7 @@ public class AlbumController implements Serializable {
 		return album;
 	}
 
-	public String save() {
+	public String saveAlbum() {
 		if (log.isDebugEnabled()) {
 			log.debug("Saving album: " + album.getArtist() + " " + album.getTitle());
 		}
@@ -168,14 +169,15 @@ public class AlbumController implements Serializable {
 					}
 				}
 			}
-		} catch (AlbumNotFoundException | ArtistNotFoundException | InvalidArtistException e) {
+		} catch (AlbumNotFoundException | ArtistNotFoundException | InvalidAlbumException e) {
+			album = null;
 			return handleException(e);
 		}
 
 		return "album";
 	}
 
-	public String delete() {
+	public String deleteAlbum() {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Deleting album: " + album.getArtist() + " " + album.getTitle());
@@ -183,6 +185,7 @@ public class AlbumController implements Serializable {
 
 		try {
 			musicLibraryService.deleteAlbum(album.getId());
+			albums.remove(album);
 		} catch (Exception e) {
 			return handleException(e);
 		}
@@ -192,7 +195,7 @@ public class AlbumController implements Serializable {
 		return "index";
 	}
 
-	public String cancel() {
+	public String cancelEditAlbum() {
 		if (log.isDebugEnabled()) {
 			log.debug("Cancel album edit: " + album.getArtist().getName() + " " + album.getTitle());
 		}
@@ -303,9 +306,14 @@ public class AlbumController implements Serializable {
 		}
 	}
 
-	public String deleteArtist() throws ArtistNotFoundException {
+	public String deleteArtist() {
 
-		musicLibraryService.deleteArtist(getArtistId());
+		try {
+			musicLibraryService.deleteArtist(getArtistId());
+		} catch (Exception e) {
+			log.error("Error deleting artist", e);
+			return handleException(e);
+		}
 		return "artistlist";
 	}
 
