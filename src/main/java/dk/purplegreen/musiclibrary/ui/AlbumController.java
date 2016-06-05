@@ -27,7 +27,7 @@ public class AlbumController implements Serializable {
 
 	private static final long serialVersionUID = 7960192974336036316L;
 
-	private final static Logger log = LogManager.getLogger(AlbumController.class);
+	private static final Logger log = LogManager.getLogger(AlbumController.class);
 
 	@Inject
 	private MusicLibraryService musicLibraryService;
@@ -217,7 +217,7 @@ public class AlbumController implements Serializable {
 			log.debug("Adding song");
 		}
 
-		if (album.getSongs().size() > 0) {
+		if (!album.getSongs().isEmpty()) {
 			Song song = album.getSongs().get(album.getSongs().size() - 1);
 			album.addSong(new Song("", song.getTrack() + 1, song.getDisc()));
 		} else {

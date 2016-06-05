@@ -1,5 +1,6 @@
 package dk.purplegreen.musiclibrary.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,10 @@ import org.apache.logging.log4j.Logger;
 @NamedQueries({ @NamedQuery(name = "findAllAlbums", query = "SELECT a FROM Album a"),
 		@NamedQuery(name = "findByArtist", query = "SELECT a FROM Album a WHERE a.artist = :artist"),
 		@NamedQuery(name = "findByTitle", query = "SELECT a FROM Album a WHERE a.title = :title") })
-public class Album {
+public class Album implements Serializable {
+		
+	private static final long serialVersionUID = -3189225961340376887L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
