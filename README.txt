@@ -29,6 +29,22 @@ WLP Server config
 </server>    
 
 
+Wildfly config
+==============
+
+Deploy derbyclient.jar as application.
+
+<datasource jta="true" jndi-name="java:/jdbc/MusicLibraryDS" pool-name="MusicLibrary" enabled="true" use-ccm="true">
+	<connection-url>jdbc:derby://localhost:1527/musiclibrarydb</connection-url>
+    <driver-class>org.apache.derby.jdbc.ClientDriver</driver-class>
+    <driver>derbyclient.jar</driver>
+    <security>
+    	<user-name>musiclibrary</user-name>
+        <password>test</password>
+    </security>
+</datasource>
+
+
 URL's
 =====
 

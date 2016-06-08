@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +41,7 @@ public class Album implements Serializable {
 	private String title;
 	@Column(name = "ALBUM_YEAR", nullable = false)
 	private Integer year;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true, fetch=FetchType.EAGER)
 	@OrderBy("disc, track")
 	private List<Song> songs = new ArrayList<Song>();
 
