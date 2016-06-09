@@ -16,7 +16,7 @@ public class AlbumValidator {
 			throw new InvalidAlbumException("Album title cannot be empty");
 		}
 
-		if (album.getSongs() == null || album.getSongs().size() == 0) {
+		if (album.getSongs() == null || album.getSongs().isEmpty()) {
 			throw new InvalidAlbumException("Album does not have any songs");
 		}
 	}

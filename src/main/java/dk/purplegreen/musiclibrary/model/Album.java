@@ -43,9 +43,9 @@ public class Album implements Serializable {
 	private Integer year;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true, fetch=FetchType.EAGER)
 	@OrderBy("disc, track")
-	private List<Song> songs = new ArrayList<Song>();
+	private List<Song> songs = new ArrayList<>();
 
-	private final static Logger log = LogManager.getLogger(Album.class);
+	private static final Logger log = LogManager.getLogger(Album.class);
 
 	public Album() {
 	}

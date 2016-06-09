@@ -49,7 +49,7 @@ public class AlbumDAO {
 		CriteriaQuery<Album> cq = cb.createQuery(Album.class);
 		Root<Album> album = cq.from(Album.class);
 
-		List<Predicate> predicates = new ArrayList<Predicate>();
+		List<Predicate> predicates = new ArrayList<>();
 
 		if (artist != null && !artist.isEmpty()) {
 			predicates.add(cb.like(cb.lower(album.get("artist").get("name")), "%" + artist.toLowerCase() + "%"));

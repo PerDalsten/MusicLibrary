@@ -24,7 +24,6 @@ import org.apache.logging.log4j.Logger;
 import dk.purplegreen.musiclibrary.AlbumNotFoundException;
 import dk.purplegreen.musiclibrary.ArtistNotFoundException;
 import dk.purplegreen.musiclibrary.InvalidAlbumException;
-import dk.purplegreen.musiclibrary.InvalidArtistException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
 
@@ -32,7 +31,7 @@ import dk.purplegreen.musiclibrary.model.Album;
 @RequestScoped
 public class Albums {
 
-	private final static Logger log = LogManager.getLogger(Albums.class);
+	private static final Logger log = LogManager.getLogger(Albums.class);
 
 	@Inject
 	MusicLibraryService service;
@@ -45,6 +44,7 @@ public class Albums {
 		try {
 			return Response.ok(service.getAlbum(id)).build();
 		} catch (AlbumNotFoundException e) {
+			log.info("Album with id: "+id+" not found");
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
@@ -70,11 +70,13 @@ public class Albums {
 			album = service.createAlbum(album);
 			return Response.created(new URI("albums/" + album.getId())).entity(album).build();
 		} catch (URISyntaxException e) {
+			log.error("Exception caught in createAlbum", e);
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		} catch (ArtistNotFoundException e) {
-			log.error("Exception caught in createAlbum", e);
+			log.error("Exception caught in createAlbum", e);			
 			return Response.status(Status.NOT_FOUND).build();
 		} catch (InvalidAlbumException e) {
+			log.error("Exception caught in createAlbum", e);
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}
@@ -91,11 +93,13 @@ public class Albums {
 			album = service.updateAlbum(album);
 			return Response.ok(album).build();
 		} catch (AlbumNotFoundException e) {
+			log.info("Album with id: "+id+" not found");
 			return Response.status(Status.NOT_FOUND).build();
 		} catch (ArtistNotFoundException e) {
-			log.error("Exception caught in createAlbum", e);
+			log.error("Exception caught in updateAlbum", e);
 			return Response.status(Status.NOT_FOUND).build();
 		} catch (InvalidAlbumException e) {
+			log.error("Exception caught in updateAlbum", e);
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}
@@ -107,6 +111,7 @@ public class Albums {
 			service.deleteAlbum(id);
 			return Response.ok().build();
 		} catch (AlbumNotFoundException e) {
+			log.info("Album with id: "+id+" not found");
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}

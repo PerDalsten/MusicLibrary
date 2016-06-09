@@ -29,7 +29,7 @@ import dk.purplegreen.musiclibrary.model.Artist;
 @RequestScoped
 public class Artists {
 
-	private final static Logger log = LogManager.getLogger(Artists.class);
+	private static final Logger log = LogManager.getLogger(Artists.class);
 
 	@Inject
 	MusicLibraryService service;
@@ -41,6 +41,7 @@ public class Artists {
 		try {
 			return Response.ok(service.getArtist(id)).build();
 		} catch (ArtistNotFoundException e) {
+			log.error("Exception in getArtist", e);
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
@@ -60,8 +61,10 @@ public class Artists {
 			artist = service.createArtist(artist);
 			return Response.created(new URI("artist/" + artist.getId())).entity(artist).build();
 		} catch (URISyntaxException e) {
+			log.error("Exception in createArtist", e);
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		} catch (InvalidArtistException e) {
+			log.error("Exception in createArtist", e);
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}
@@ -76,8 +79,10 @@ public class Artists {
 			artist = service.updateArtist(artist);
 			return Response.ok(artist).build();
 		} catch (ArtistNotFoundException e) {
+			log.error("Exception in updateArtist", e);
 			return Response.status(Status.NOT_FOUND).build();
 		} catch (InvalidArtistException e) {
+			log.error("Exception in updateArtist", e);
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}
@@ -89,6 +94,7 @@ public class Artists {
 			service.deleteArtist(id);
 			return Response.ok().build();
 		} catch (ArtistNotFoundException e) {
+			log.error("Exception in deleteArtist", e);
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
@@ -101,6 +107,7 @@ public class Artists {
 		try {
 			return Response.ok(service.getAlbums(service.getArtist(id))).build();
 		} catch (ArtistNotFoundException e) {
+			log.error("Exception in getArtistAlbums", e);
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}

@@ -28,7 +28,7 @@ public class Artist implements Serializable {
 	@Column(name = "ARTIST_NAME", nullable = false)
 	private String name;
 
-	private final static Logger log = LogManager.getLogger(Artist.class);
+	private static final Logger log = LogManager.getLogger(Artist.class);
 
 	public Artist() {
 	}
