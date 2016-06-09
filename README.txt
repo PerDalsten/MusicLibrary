@@ -45,6 +45,12 @@ Deploy derbyclient.jar as application.
 </datasource>
 
 
+Logging
+=======
+
+Add system property to server, e.g. -Ddk.purplegreen.logdir=c:/Logs/WLP.
+
+
 URL's
 =====
 
@@ -54,3 +60,5 @@ Search: http://localhost:9080/MusicLibrary/rest/albums?artist=Thin Lizzy&title=&
 By artist: http://localhost:9080/MusicLibrary/rest/artist/83/albums
 
 UI:http://localhost:9080/MusicLibrary/albums/index.xhtml (or just http://localhost:9080/MusicLibrary)
+
+For Wildfly default port is 8080.

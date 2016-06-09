@@ -2,7 +2,7 @@
 <Configuration status="ERROR">
 
 	<Properties>
-		<Property name="logdir">logs</Property>
+		<Property name="dk.purplegreen.logdir">logs</Property>
 	</Properties>
 
 	<Appenders>
@@ -10,8 +10,8 @@
 			<PatternLayout pattern="%d [%t] %p %c{1.} - %m%n" />
 		</Console>
 
-		<RollingFile name="File" fileName="${logdir}/MusicLibrary.log"
-			filePattern="${logdir}/LogTest-%i.log.zip">
+		<RollingFile name="File" fileName="${sys:dk.purplegreen.logdir}/MusicLibrary.log"
+			filePattern="${sys:dk.purplegreen.logdir}/MusicLibrary-%i.log.zip">
 			<PatternLayout>
 				<Pattern>%d [%t] %p %c{1.} - %m%n</Pattern>
 			</PatternLayout>
@@ -28,7 +28,7 @@
 			<AppenderRef ref="File" />
 		</Root>
 
-		<Logger name="dk.purplegreen.musiclibrary" level="WARN" additivity="false">
+		<Logger name="dk.purplegreen.musiclibrary" level="DEBUG" additivity="false">
 			<AppenderRef ref="File" />
 		</Logger>
 	</Loggers>
