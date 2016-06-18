@@ -48,7 +48,7 @@ Deploy derbyclient.jar as application.
 Logging
 =======
 
-Add system property to server, e.g. -Ddk.purplegreen.logdir=c:/Logs/WLP.
+Add system property to server, e.g. -Ddk.purplegreen.logdir=../standalone/log for Wildfly.
 
 
 URL's
