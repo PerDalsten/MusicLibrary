@@ -98,15 +98,15 @@ public class AlbumTest {
 	public void testCascade() {
 
 		EntityManager em = TestEntityManagerFactory.getEntityManager();
-
+		em.getTransaction().begin();
+		
 		Artist artist = new Artist("Testament");
 		em.persist(artist);
 
 		Album album = new Album(artist, "Practice What You Preach", 1989);
 		album.addSong(new Song("Practice What You Preach", 1));
 		album.addSong(new Song("Perilouz Nation", 2));
-		album.addSong(new Song("Bogus Song", 3));
-		em.getTransaction().begin();
+		album.addSong(new Song("Bogus Song", 3));		
 		em.persist(album);
 		em.getTransaction().commit();
 

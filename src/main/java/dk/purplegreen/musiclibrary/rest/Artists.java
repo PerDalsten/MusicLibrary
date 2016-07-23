@@ -59,7 +59,7 @@ public class Artists {
 		artist.setId(null);
 		try {
 			artist = service.createArtist(artist);
-			return Response.created(new URI("artist/" + artist.getId())).entity(artist).build();
+			return Response.created(new URI("artists/" + artist.getId())).entity(artist).build();
 		} catch (URISyntaxException e) {
 			log.error("Exception in createArtist", e);
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();

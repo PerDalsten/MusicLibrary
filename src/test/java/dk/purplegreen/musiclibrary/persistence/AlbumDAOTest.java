@@ -80,7 +80,7 @@ public class AlbumDAOTest {
 	@Test
 	public void testFindSort() {
 		EntityManager testEM = TestEntityManagerFactory.getEntityManager();
-		
+
 		when(em.getCriteriaBuilder()).thenReturn(testEM.getCriteriaBuilder());
 		@SuppressWarnings("rawtypes")
 		ArgumentCaptor<CriteriaQuery> argument = ArgumentCaptor.forClass(CriteriaQuery.class);
@@ -92,35 +92,26 @@ public class AlbumDAOTest {
 
 		List<Album> albums = albumDAO.find(null, null, null);
 		assertEquals("Wrong artist", "AC/DC", albums.get(0).getArtist().getName());
-		
-		
+
 		testEM.close();
 	}
-	
+
 	@Test
 	public void testCreate() {
-		EntityManager testEM = TestEntityManagerFactory.getEntityManager();
-
 		Album album = new Album();
-
+		
 		albumDAO.save(album);
 
 		verify(em, times(0)).merge(any());
-
-		testEM.close();
 	}
 
 	@Test
 	public void testUpdate() {
-		EntityManager testEM = TestEntityManagerFactory.getEntityManager();
-
 		Album album = new Album();
 		album.setId(42);
 
 		albumDAO.save(album);
 
 		verify(em, times(1)).merge(any());
-
-		testEM.close();
 	}
 }

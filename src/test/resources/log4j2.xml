@@ -11,7 +11,7 @@
 		</Console>
 
 		<RollingFile name="File" fileName="${logdir}/MusicLibrary.log"
-			filePattern="${logdir}/LogTest-%i.log.zip">
+			filePattern="${logdir}/MusicLibrary-%i.log.zip">
 			<PatternLayout>
 				<Pattern>%d [%t] %p %c{1.} - %m%n</Pattern>
 			</PatternLayout>
