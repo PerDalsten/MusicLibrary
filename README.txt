@@ -62,3 +62,11 @@ By artist: http://localhost:9080/MusicLibrary/rest/artist/83/albums
 UI:http://localhost:9080/MusicLibrary/albums/index.xhtml (or just http://localhost:9080/MusicLibrary)
 
 For Wildfly default port is 8080.
+
+
+QA
+==
+
+mvn sonar:sonar
+mvn site
+
