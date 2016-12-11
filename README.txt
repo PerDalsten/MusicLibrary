@@ -9,17 +9,15 @@ Fix pom.xml (add Java EE 7, fix Junit version, compiler level, etc.) and web.xml
 WLP Server config
 =================
 
-<server description="WLP Used From Eclipse">
-	<featureManager>
-		<feature>javaee-7.0</feature>
-		<feature>localConnector-1.0</feature>
-	</featureManager>
+Copy derbyclient.jar to lib (create) directory in server.
+
+<server description="WLP">
 	
 	<httpEndpoint host="*" httpPort="9080" httpsPort="9443" id="defaultHttpEndpoint"/>
 	
 	<library id="DerbyLib">
-		<fileset dir="C:\Development\jdk1.8\db\lib" includes="*.jar"/>
-	</library>	
+		<fileset dir="${server.config.dir}/lib" includes="*.jar"/>
+	</library>
 	<dataSource jndiName="jdbc/MusicLibraryDS">
 		<jdbcDriver libraryRef="DerbyLib"/>
 		<properties.derby.client createDatabase="false" databaseName="musiclibrarydb" password="{xor}KzosKw==" user="musiclibrary"/>
@@ -48,7 +46,16 @@ Deploy derbyclient.jar as application.
 Logging
 =======
 
-Add system property to server, e.g. -Ddk.purplegreen.logdir=../standalone/log for Wildfly.
+Add system property dk.purplegreen.logdir to server.
+
+WLP: add -Ddk.purplegreen.logdir=./logs to jvm.properties
+
+Wildfly: add to standalone.xml:
+
+    <system-properties>
+      <property name="dk.purplegreen.logdir" value="${jboss.server.log.dir}"/>
+    </system-properties>
+
 
 
 URL's
