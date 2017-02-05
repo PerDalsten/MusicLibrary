@@ -6,16 +6,20 @@ import static org.junit.Assert.assertNull;
 
 import javax.persistence.EntityManager;
 
+import org.junit.Rule;
 import org.junit.Test;
 
-import dk.purplegreen.musiclibrary.persistence.TestEntityManagerFactory;
+import dk.purplegreen.musiclibrary.test.Database;
 
 public class ArtistTest {
+
+	@Rule
+	public Database database = new Database();
 
 	@Test
 	public void testCRUD() {
 
-		EntityManager em = TestEntityManagerFactory.getEntityManager();
+		EntityManager em = database.getEntityManager();
 		em.getTransaction().begin();
 
 		Artist artist = new Artist("Black Sabbath");
@@ -50,6 +54,5 @@ public class ArtistTest {
 
 		artist = em.find(Artist.class, artist.getId());
 		assertNull("Artist is not null", artist);
-		em.close();
 	}
 }

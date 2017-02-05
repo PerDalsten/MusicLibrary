@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -23,9 +24,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import dk.purplegreen.musiclibrary.model.Album;
+import dk.purplegreen.musiclibrary.test.Database;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AlbumDAOTest {
+
+	@Rule
+	public Database database = new Database();
 
 	@Mock
 	private EntityManager em;
@@ -36,19 +41,15 @@ public class AlbumDAOTest {
 	@Test
 	public void testFindById() {
 
-		EntityManager testEM = TestEntityManagerFactory.getEntityManager();
-
 		ArgumentCaptor<Integer> argument = ArgumentCaptor.forClass(Integer.class);
 		when(em.find(any(), argument.capture())).then(new Answer<Album>() {
 			@Override
 			public Album answer(InvocationOnMock invocation) {
-				return testEM.find(Album.class, argument.getValue());
+				return database.getEntityManager().find(Album.class, argument.getValue());
 			}
 		});
 
-		Album album = albumDAO.find(TestEntityManagerFactory.getParadoxId());
-
-		testEM.close();
+		Album album = albumDAO.find(2);
 
 		assertNotNull("Album is null", album);
 		assertEquals("Wrong artist", "Royal Hunt", album.getArtist().getName());
@@ -58,20 +59,16 @@ public class AlbumDAOTest {
 	@Test
 	public void testFindByArtist() {
 
-		EntityManager testEM = TestEntityManagerFactory.getEntityManager();
-
-		when(em.getCriteriaBuilder()).thenReturn(testEM.getCriteriaBuilder());
+		when(em.getCriteriaBuilder()).thenReturn(database.getEntityManager().getCriteriaBuilder());
 		@SuppressWarnings("rawtypes")
 		ArgumentCaptor<CriteriaQuery> argument = ArgumentCaptor.forClass(CriteriaQuery.class);
 		when(em.createQuery(argument.capture())).then(new Answer<TypedQuery<Album>>() {
 			public TypedQuery<Album> answer(InvocationOnMock invocation) {
-				return testEM.createQuery(argument.getValue());
+				return database.getEntityManager().createQuery(argument.getValue());
 			}
 		});
 
 		List<Album> albums = albumDAO.find("beatles", null, null);
-
-		testEM.close();
 
 		assertEquals("Wrong number of results", 1, albums.size());
 		assertEquals("Wrong artist", "The Beatles", albums.get(0).getArtist().getName());
@@ -79,27 +76,25 @@ public class AlbumDAOTest {
 
 	@Test
 	public void testFindSort() {
-		EntityManager testEM = TestEntityManagerFactory.getEntityManager();
 
-		when(em.getCriteriaBuilder()).thenReturn(testEM.getCriteriaBuilder());
+		when(em.getCriteriaBuilder()).thenReturn(database.getEntityManager().getCriteriaBuilder());
 		@SuppressWarnings("rawtypes")
 		ArgumentCaptor<CriteriaQuery> argument = ArgumentCaptor.forClass(CriteriaQuery.class);
 		when(em.createQuery(argument.capture())).then(new Answer<TypedQuery<Album>>() {
 			public TypedQuery<Album> answer(InvocationOnMock invocation) {
-				return testEM.createQuery(argument.getValue());
+				return database.getEntityManager().createQuery(argument.getValue());
 			}
 		});
 
 		List<Album> albums = albumDAO.find(null, null, null);
 		assertEquals("Wrong artist", "AC/DC", albums.get(0).getArtist().getName());
 
-		testEM.close();
 	}
 
 	@Test
 	public void testCreate() {
 		Album album = new Album();
-		
+
 		albumDAO.save(album);
 
 		verify(em, times(0)).merge(any());
