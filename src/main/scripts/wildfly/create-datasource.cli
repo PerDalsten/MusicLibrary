@@ -1,0 +1,3 @@
+connect localhost
+
+data-source add --jndi-name=java:/jdbc/MusicLibraryDS --name=MusicLibrary --connection-url=jdbc:derby://localhost:1527/musiclibrarydb --driver-name=derby --user-name=musiclibrary --password=test

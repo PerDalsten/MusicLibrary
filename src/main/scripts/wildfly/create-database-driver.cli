@@ -1,0 +1,9 @@
+connect localhost
+ 
+batch
+ 
+module add --name=derby.jdbc --resources=derbyclient.jar --dependencies=javax.api,javax.transaction.api
+  
+/subsystem=datasources/jdbc-driver=derby:add(driver-name="derby",driver-module-name="derby.jdbc",driver-class-name=org.apache.derby.jdbc.ClientDriver)
+
+run-batch

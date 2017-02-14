@@ -1,0 +1,3 @@
+connect localhost
+
+/system-property=dk.purplegreen.logdir:add(value=${jboss.server.log.dir})

@@ -30,7 +30,7 @@ Copy derbyclient.jar to lib (create) directory in server.
 Wildfly config
 ==============
 
-Deploy derbyclient.jar as application.
+Deploy derbyclient.jar as application and add datasource.
 
 <datasource jta="true" jndi-name="java:/jdbc/MusicLibraryDS" pool-name="MusicLibrary" enabled="true" use-ccm="true">
 	<connection-url>jdbc:derby://localhost:1527/musiclibrarydb</connection-url>
@@ -41,6 +41,13 @@ Deploy derbyclient.jar as application.
         <password>test</password>
     </security>
 </datasource>
+
+or run scripts in src/main/scripts/wildfly as needed e.g.
+
+
+cd $JAVA_HOME/db/lib; /path/to/jboss-cli.sh --file=/path/to/create-database-driver.cli 
+
+/path/to/jboss-cli.sh --file=/path/to/create-datasource.cli
 
 
 Logging
@@ -56,6 +63,9 @@ Wildfly: add to standalone.xml:
       <property name="dk.purplegreen.logdir" value="${jboss.server.log.dir}"/>
     </system-properties>
 
+or run
+
+/path/to/jboss-cli.sh --file=/path/to/set-logdir.cli
 
 
 URL's
