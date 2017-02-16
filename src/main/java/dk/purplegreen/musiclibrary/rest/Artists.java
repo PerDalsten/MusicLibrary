@@ -15,7 +15,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,13 +36,9 @@ public class Artists {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getArtist(@PathParam("id") Integer id) {
-		try {
-			return Response.ok(service.getArtist(id)).build();
-		} catch (ArtistNotFoundException e) {
-			log.error("Exception in getArtist", e);
-			return Response.status(Status.NOT_FOUND).build();
-		}
+	public Response getArtist(@PathParam("id") Integer id) throws ArtistNotFoundException {
+
+		return Response.ok(service.getArtist(id)).build();
 	}
 
 	@GET
@@ -55,60 +50,37 @@ public class Artists {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createArtist(Artist artist) {
-		artist.setId(null);
-		try {
-			artist = service.createArtist(artist);
-			return Response.created(new URI("artists/" + artist.getId())).entity(artist).build();
-		} catch (URISyntaxException e) {
-			log.error("Exception in createArtist", e);
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-		} catch (InvalidArtistException e) {
-			log.error("Exception in createArtist", e);
-			return Response.status(Status.BAD_REQUEST).build();
-		}
+	public Response createArtist(Artist artist) throws InvalidArtistException, URISyntaxException {
+
+		artist = service.createArtist(artist);
+		return Response.created(new URI("artists/" + artist.getId())).entity(artist).build();
 	}
 
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateArtist(@PathParam("id") Integer id, Artist artist) {
+	public Response updateArtist(@PathParam("id") Integer id, Artist artist)
+			throws ArtistNotFoundException, InvalidArtistException {
 		artist.setId(id);
-		try {
-			artist = service.updateArtist(artist);
-			return Response.ok(artist).build();
-		} catch (ArtistNotFoundException e) {
-			log.error("Exception in updateArtist", e);
-			return Response.status(Status.NOT_FOUND).build();
-		} catch (InvalidArtistException e) {
-			log.error("Exception in updateArtist", e);
-			return Response.status(Status.BAD_REQUEST).build();
-		}
+
+		artist = service.updateArtist(artist);
+		return Response.ok(artist).build();
 	}
 
 	@DELETE
 	@Path("/{id}")
-	public Response deleteArtist(@PathParam("id") Integer id) {
-		try {
-			service.deleteArtist(id);
-			return Response.ok().build();
-		} catch (ArtistNotFoundException e) {
-			log.error("Exception in deleteArtist", e);
-			return Response.status(Status.NOT_FOUND).build();
-		}
+	public Response deleteArtist(@PathParam("id") Integer id) throws ArtistNotFoundException, InvalidArtistException {
+
+		service.deleteArtist(id);
+		return Response.ok().build();
 	}
 
 	@GET
 	@Path("/{id}/albums")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getArtistAlbums(@PathParam("id") Integer id) {
+	public Response getArtistAlbums(@PathParam("id") Integer id) throws ArtistNotFoundException {
 
-		try {
-			return Response.ok(service.getAlbums(service.getArtist(id))).build();
-		} catch (ArtistNotFoundException e) {
-			log.error("Exception in getArtistAlbums", e);
-			return Response.status(Status.NOT_FOUND).build();
-		}
+		return Response.ok(service.getAlbums(service.getArtist(id))).build();
 	}
 }

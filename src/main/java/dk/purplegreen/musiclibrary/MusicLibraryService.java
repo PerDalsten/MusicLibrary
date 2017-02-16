@@ -38,19 +38,25 @@ public class MusicLibraryService {
 	}
 
 	public Album createAlbum(Album album) throws ArtistNotFoundException, InvalidAlbumException {
+
+		albumValidator.validate(album);
+
 		album.setId(null);
 		album.setArtist(getArtist(album.getArtist().getId()));
 		attachSongs(album);
-		albumValidator.validate(album);
+
 		return albumDAO.save(album);
 	}
 
 	public Album updateAlbum(Album album)
 			throws AlbumNotFoundException, ArtistNotFoundException, InvalidAlbumException {
+	
+		albumValidator.validate(album);
+
 		getAlbum(album.getId());
 		album.setArtist(getArtist(album.getArtist().getId()));
 		attachSongs(album);
-		albumValidator.validate(album);
+
 		return albumDAO.save(album);
 	}
 
@@ -76,19 +82,30 @@ public class MusicLibraryService {
 	}
 
 	public Artist createArtist(Artist artist) throws InvalidArtistException {
-		artist.setId(null);
+
 		artistValidator.validate(artist);
+
+		artist.setId(null);
 		return artistDAO.save(artist);
 	}
 
 	public Artist updateArtist(Artist artist) throws ArtistNotFoundException, InvalidArtistException {
-		getArtist(artist.getId());
+
 		artistValidator.validate(artist);
+
+		getArtist(artist.getId());
 		return artistDAO.save(artist);
 	}
 
-	public void deleteArtist(Integer id) throws ArtistNotFoundException {
-		artistDAO.delete(getArtist(id));
+	public void deleteArtist(Integer id) throws ArtistNotFoundException, InvalidArtistException {
+		
+		Artist artist=getArtist(id);
+		
+		if(albumDAO.getArtistAlbumCount(artist)>0){
+			throw new InvalidArtistException("Artist has albums and cannot be deleted");
+		}
+		
+		artistDAO.delete(artist);
 	}
 
 	public List<Album> getAlbums(Artist artist) {

@@ -16,7 +16,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,14 +38,9 @@ public class Albums {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAlbum(@PathParam("id") Integer id) {
+	public Response getAlbum(@PathParam("id") Integer id) throws AlbumNotFoundException {
 
-		try {
-			return Response.ok(service.getAlbum(id)).build();
-		} catch (AlbumNotFoundException e) {
-			log.info("Album with id: "+id+" not found");
-			return Response.status(Status.NOT_FOUND).build();
-		}
+		return Response.ok(service.getAlbum(id)).build();
 	}
 
 	@GET
@@ -63,56 +57,30 @@ public class Albums {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createAlbum(Album album) {
+	public Response createAlbum(Album album) throws ArtistNotFoundException, InvalidAlbumException, URISyntaxException {
 
-		album.setId(null);
-		try {
-			album = service.createAlbum(album);
-			return Response.created(new URI("albums/" + album.getId())).entity(album).build();
-		} catch (URISyntaxException e) {
-			log.error("Exception caught in createAlbum", e);
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-		} catch (ArtistNotFoundException e) {
-			log.error("Exception caught in createAlbum", e);			
-			return Response.status(Status.NOT_FOUND).build();
-		} catch (InvalidAlbumException e) {
-			log.error("Exception caught in createAlbum", e);
-			return Response.status(Status.BAD_REQUEST).build();
-		}
+		album = service.createAlbum(album);
+		return Response.created(new URI("albums/" + album.getId())).entity(album).build();
 	}
 
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateAlbum(@PathParam("id") Integer id, Album album) {
+	public Response updateAlbum(@PathParam("id") Integer id, Album album)
+			throws AlbumNotFoundException, ArtistNotFoundException, InvalidAlbumException {
 
 		album.setId(id);
 
-		try {
-			album = service.updateAlbum(album);
-			return Response.ok(album).build();
-		} catch (AlbumNotFoundException e) {
-			log.info("Album with id: "+id+" not found");
-			return Response.status(Status.NOT_FOUND).build();
-		} catch (ArtistNotFoundException e) {
-			log.error("Exception caught in updateAlbum", e);
-			return Response.status(Status.NOT_FOUND).build();
-		} catch (InvalidAlbumException e) {
-			log.error("Exception caught in updateAlbum", e);
-			return Response.status(Status.BAD_REQUEST).build();
-		}
+		album = service.updateAlbum(album);
+		return Response.ok(album).build();
 	}
 
 	@DELETE
 	@Path("/{id}")
-	public Response deleteAlbum(@PathParam("id") Integer id) {
-		try {
-			service.deleteAlbum(id);
-			return Response.ok().build();
-		} catch (AlbumNotFoundException e) {
-			log.info("Album with id: "+id+" not found");
-			return Response.status(Status.NOT_FOUND).build();
-		}
+	public Response deleteAlbum(@PathParam("id") Integer id) throws AlbumNotFoundException {
+
+		service.deleteAlbum(id);
+		return Response.ok().build();
 	}
 }

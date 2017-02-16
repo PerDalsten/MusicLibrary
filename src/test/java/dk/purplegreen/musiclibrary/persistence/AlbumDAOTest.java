@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -24,6 +25,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import dk.purplegreen.musiclibrary.model.Album;
+import dk.purplegreen.musiclibrary.model.Artist;
 import dk.purplegreen.musiclibrary.test.Database;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -91,6 +93,23 @@ public class AlbumDAOTest {
 
 	}
 
+	@Test
+	public void testGetArtistAlbumCount() {
+		
+		ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
+		when(em.createQuery(argument.capture())).then(new Answer<Query>() {
+			public Query answer(InvocationOnMock invocation) {
+				return database.getEntityManager().createQuery(argument.getValue());
+			}
+		});
+		
+		Artist artist=new Artist();
+		artist.setId(1);
+				
+		assertEquals("Wrong album count", new Integer(1), albumDAO.getArtistAlbumCount(artist));
+	}
+	
+	
 	@Test
 	public void testCreate() {
 		Album album = new Album();

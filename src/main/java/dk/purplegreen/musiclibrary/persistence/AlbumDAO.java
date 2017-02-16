@@ -72,4 +72,9 @@ public class AlbumDAO {
 		query.setParameter("artist", artist);
 		return query.getResultList();
 	}
+
+	public Integer getArtistAlbumCount(Artist artist) {
+		return ((Number) em.createQuery("SELECT COUNT(a) FROM Album a WHERE a.artist = :artist")
+				.setParameter("artist", artist).getSingleResult()).intValue();
+	}
 }
