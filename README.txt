@@ -9,14 +9,14 @@ Fix pom.xml (add Java EE 7, fix Junit version, compiler level, etc.) and web.xml
 WLP Server config
 =================
 
-Copy derbyclient.jar to lib (create) directory in server.
+Copy derbyclient.jar to lib/derby (create) directory in server.
 
 <server description="WLP">
 	
 	<httpEndpoint host="*" httpPort="9080" httpsPort="9443" id="defaultHttpEndpoint"/>
 	
 	<library id="DerbyLib">
-		<fileset dir="${server.config.dir}/lib" includes="*.jar"/>
+		<fileset dir="${server.config.dir}/lib/derby" includes="*.jar"/>
 	</library>
 	<dataSource jndiName="jdbc/MusicLibraryDS">
 		<jdbcDriver libraryRef="DerbyLib"/>
