@@ -70,9 +70,8 @@ public class Artists {
 
 	@DELETE
 	@Path("/{id}")
-	public Response deleteArtist(@PathParam("id") Integer id) throws ArtistNotFoundException, InvalidArtistException {
-
-		service.deleteArtist(id);
+	public Response deleteArtist(@PathParam("id") Integer id) throws ArtistNotFoundException, InvalidArtistException {		
+		service.deleteArtist(service.getArtist(id));
 		return Response.ok().build();
 	}
 

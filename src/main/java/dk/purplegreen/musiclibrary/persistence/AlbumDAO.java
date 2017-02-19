@@ -35,7 +35,7 @@ public class AlbumDAO {
 	}
 
 	public void delete(Album album) {
-		em.remove(em.merge(album));
+		em.remove(album);
 	}
 
 	public List<Album> getAllAlbums() {
