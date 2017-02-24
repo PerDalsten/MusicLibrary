@@ -28,9 +28,9 @@ import org.apache.logging.log4j.Logger;
 		@NamedQuery(name = "findByArtist", query = "SELECT a FROM Album a WHERE a.artist = :artist"),
 		@NamedQuery(name = "findByTitle", query = "SELECT a FROM Album a WHERE a.title = :title") })
 public class Album implements Serializable {
-		
+
 	private static final long serialVersionUID = -3189225961340376887L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -41,13 +41,17 @@ public class Album implements Serializable {
 	private String title;
 	@Column(name = "ALBUM_YEAR", nullable = false)
 	private Integer year;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true, fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true, fetch = FetchType.EAGER)
 	@OrderBy("disc, track")
 	private List<Song> songs = new ArrayList<>();
 
 	private static final Logger log = LogManager.getLogger(Album.class);
 
 	public Album() {
+	}
+
+	public Album(Integer id) {
+		this.id = id;
 	}
 
 	public Album(Artist artist, String title, Integer year) {

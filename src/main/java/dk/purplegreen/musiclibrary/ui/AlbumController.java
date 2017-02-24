@@ -285,8 +285,7 @@ public class AlbumController implements Serializable {
 
 	public String deleteArtist() throws ArtistNotFoundException, InvalidArtistException {
 
-		musicLibraryService.deleteArtist(
-				musicLibraryService.getArtist(getArtistId()));
+		musicLibraryService.deleteArtist(new Artist(getArtistId()));
 		
 		return "artistlist";
 	}

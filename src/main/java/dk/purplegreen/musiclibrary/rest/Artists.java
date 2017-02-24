@@ -80,6 +80,6 @@ public class Artists {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getArtistAlbums(@PathParam("id") Integer id) throws ArtistNotFoundException {
 
-		return Response.ok(service.getAlbums(service.getArtist(id))).build();
+		return Response.ok(service.getAlbums(new Artist(id))).build();
 	}
 }

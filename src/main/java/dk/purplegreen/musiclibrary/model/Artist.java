@@ -19,9 +19,9 @@ import org.apache.logging.log4j.Logger;
 @NamedQueries({ @NamedQuery(name = "findAllArtists", query = "SELECT a FROM Artist a ORDER BY a.name"),
 		@NamedQuery(name = "findByName", query = "SELECT a FROM Artist a WHERE a.name = :name") })
 public class Artist implements Serializable {
-	
+
 	private static final long serialVersionUID = 6206086785411646677L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -31,6 +31,10 @@ public class Artist implements Serializable {
 	private static final Logger log = LogManager.getLogger(Artist.class);
 
 	public Artist() {
+	}
+
+	public Artist(Integer id) {
+		this.id = id;
 	}
 
 	public Artist(String name) {

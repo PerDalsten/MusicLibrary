@@ -79,8 +79,8 @@ public class Albums {
 	@DELETE
 	@Path("/{id}")
 	public Response deleteAlbum(@PathParam("id") Integer id) throws AlbumNotFoundException {
-
-		service.deleteAlbum(service.getAlbum(id));
+		
+		service.deleteAlbum(new Album(id));
 		return Response.ok().build();
 	}
 }

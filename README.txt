@@ -15,6 +15,8 @@ Copy derbyclient.jar to lib (create) directory in server.
 	
 	<httpEndpoint host="*" httpPort="9080" httpsPort="9443" id="defaultHttpEndpoint"/>
 	
+	<logging traceSpecification="JPA=all" traceFileName="JPA.log" maxFileSize="20" maxFiles="5" traceFormat="BASIC" />
+	
 	<library id="DerbyLib">
 		<fileset dir="${server.config.dir}/lib" includes="*.jar"/>
 	</library>
@@ -48,6 +50,12 @@ or run scripts in src/main/scripts/wildfly as needed e.g.
 cd $JAVA_HOME/db/lib; /path/to/jboss-cli.sh --file=/path/to/create-database-driver.cli 
 
 /path/to/jboss-cli.sh --file=/path/to/create-datasource.cli
+
+Add to logging subsystem (if using spy on datasource):
+
+<logger category="jboss.jdbc.spy">
+	<level name="TRACE"/>
+</logger>
 
 
 Logging

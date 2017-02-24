@@ -111,7 +111,10 @@ public class MusicLibraryService {
 		artistDAO.delete(artist);
 	}
 
-	public List<Album> getAlbums(Artist artist) {
+	public List<Album> getAlbums(Artist artist) throws ArtistNotFoundException {
+		
+		artist = getArtist(artist.getId());
+		
 		return albumDAO.findByArtist(artist);
 	}
 }
