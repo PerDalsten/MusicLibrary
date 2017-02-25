@@ -2,7 +2,7 @@ package dk.purplegreen.musiclibrary.persistence;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,7 +21,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import dk.purplegreen.musiclibrary.model.Album;
@@ -76,6 +76,7 @@ public class AlbumDAOTest {
 		assertEquals("Wrong artist", "The Beatles", albums.get(0).getArtist().getName());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testFindSort() {
 
