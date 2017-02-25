@@ -20,9 +20,7 @@ import javax.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dk.purplegreen.musiclibrary.AlbumNotFoundException;
-import dk.purplegreen.musiclibrary.ArtistNotFoundException;
-import dk.purplegreen.musiclibrary.InvalidAlbumException;
+import dk.purplegreen.musiclibrary.MusicLibraryException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
 
@@ -38,7 +36,7 @@ public class Albums {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAlbum(@PathParam("id") Integer id) throws AlbumNotFoundException {
+	public Response getAlbum(@PathParam("id") Integer id) throws MusicLibraryException {
 
 		return Response.ok(service.getAlbum(id)).build();
 	}
@@ -57,7 +55,7 @@ public class Albums {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createAlbum(Album album) throws ArtistNotFoundException, InvalidAlbumException, URISyntaxException {
+	public Response createAlbum(Album album) throws MusicLibraryException, URISyntaxException {
 
 		album = service.createAlbum(album);
 		return Response.created(new URI("albums/" + album.getId())).entity(album).build();
@@ -67,8 +65,7 @@ public class Albums {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateAlbum(@PathParam("id") Integer id, Album album)
-			throws AlbumNotFoundException, ArtistNotFoundException, InvalidAlbumException {
+	public Response updateAlbum(@PathParam("id") Integer id, Album album) throws MusicLibraryException {
 
 		album.setId(id);
 
@@ -78,8 +75,8 @@ public class Albums {
 
 	@DELETE
 	@Path("/{id}")
-	public Response deleteAlbum(@PathParam("id") Integer id) throws AlbumNotFoundException {
-		
+	public Response deleteAlbum(@PathParam("id") Integer id) throws MusicLibraryException {
+
 		service.deleteAlbum(new Album(id));
 		return Response.ok().build();
 	}

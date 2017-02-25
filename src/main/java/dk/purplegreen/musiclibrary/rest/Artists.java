@@ -19,8 +19,7 @@ import javax.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dk.purplegreen.musiclibrary.ArtistNotFoundException;
-import dk.purplegreen.musiclibrary.InvalidArtistException;
+import dk.purplegreen.musiclibrary.MusicLibraryException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Artist;
 
@@ -36,7 +35,7 @@ public class Artists {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getArtist(@PathParam("id") Integer id) throws ArtistNotFoundException {
+	public Response getArtist(@PathParam("id") Integer id) throws MusicLibraryException {
 
 		return Response.ok(service.getArtist(id)).build();
 	}
@@ -50,7 +49,7 @@ public class Artists {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createArtist(Artist artist) throws InvalidArtistException, URISyntaxException {
+	public Response createArtist(Artist artist) throws MusicLibraryException, URISyntaxException {
 
 		artist = service.createArtist(artist);
 		return Response.created(new URI("artists/" + artist.getId())).entity(artist).build();
@@ -60,8 +59,7 @@ public class Artists {
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateArtist(@PathParam("id") Integer id, Artist artist)
-			throws ArtistNotFoundException, InvalidArtistException {
+	public Response updateArtist(@PathParam("id") Integer id, Artist artist) throws MusicLibraryException {
 		artist.setId(id);
 
 		artist = service.updateArtist(artist);
@@ -70,7 +68,7 @@ public class Artists {
 
 	@DELETE
 	@Path("/{id}")
-	public Response deleteArtist(@PathParam("id") Integer id) throws ArtistNotFoundException, InvalidArtistException {		
+	public Response deleteArtist(@PathParam("id") Integer id) throws MusicLibraryException {
 		service.deleteArtist(service.getArtist(id));
 		return Response.ok().build();
 	}
@@ -78,7 +76,7 @@ public class Artists {
 	@GET
 	@Path("/{id}/albums")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getArtistAlbums(@PathParam("id") Integer id) throws ArtistNotFoundException {
+	public Response getArtistAlbums(@PathParam("id") Integer id) throws MusicLibraryException {
 
 		return Response.ok(service.getAlbums(new Artist(id))).build();
 	}

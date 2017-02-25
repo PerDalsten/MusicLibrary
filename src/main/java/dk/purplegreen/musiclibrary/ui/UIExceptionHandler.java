@@ -18,6 +18,7 @@ import dk.purplegreen.musiclibrary.AlbumNotFoundException;
 import dk.purplegreen.musiclibrary.ArtistNotFoundException;
 import dk.purplegreen.musiclibrary.InvalidAlbumException;
 import dk.purplegreen.musiclibrary.InvalidArtistException;
+import dk.purplegreen.musiclibrary.MusicLibraryException;
 
 public class UIExceptionHandler extends ExceptionHandlerWrapper {
 
@@ -50,8 +51,7 @@ public class UIExceptionHandler extends ExceptionHandlerWrapper {
 				if (t.getCause() != null)
 					t = t.getCause();
 
-				if (t instanceof AlbumNotFoundException || t instanceof ArtistNotFoundException
-						|| t instanceof InvalidAlbumException || t instanceof InvalidArtistException) {
+				if (t instanceof MusicLibraryException) {
 					errorMessage = t.getMessage();
 					if (log.isInfoEnabled())
 						log.info("Exception caught", t);

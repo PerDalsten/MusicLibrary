@@ -1,6 +1,6 @@
 package dk.purplegreen.musiclibrary;
 
-public class InvalidAlbumException extends Exception {
+public class InvalidAlbumException extends MusicLibraryException {
 
 	private static final long serialVersionUID = 8594820532607930403L;
 
