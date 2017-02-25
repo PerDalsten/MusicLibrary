@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 import dk.purplegreen.musiclibrary.AlbumNotFoundException;
 import dk.purplegreen.musiclibrary.ArtistNotFoundException;
 import dk.purplegreen.musiclibrary.InvalidAlbumException;
-import dk.purplegreen.musiclibrary.InvalidArtistException;
+import dk.purplegreen.musiclibrary.MusicLibraryException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
 import dk.purplegreen.musiclibrary.model.Artist;
@@ -104,7 +104,7 @@ public class AlbumController implements Serializable {
 		return "edit";
 	}
 
-	public Album getAlbum() throws AlbumNotFoundException {
+	public Album getAlbum() throws MusicLibraryException {
 
 		if (album == null || !album.getId().equals(getAlbumId())) {
 			if (-1 == getAlbumId()) {
@@ -131,7 +131,7 @@ public class AlbumController implements Serializable {
 		return album;
 	}
 
-	public String saveAlbum() throws AlbumNotFoundException, ArtistNotFoundException, InvalidAlbumException {
+	public String saveAlbum() throws MusicLibraryException {
 		if (log.isDebugEnabled()) {
 			log.debug("Saving album: " + album.getArtist() + " " + album.getTitle());
 		}
@@ -166,7 +166,7 @@ public class AlbumController implements Serializable {
 		return "album";
 	}
 
-	public String deleteAlbum() throws AlbumNotFoundException {
+	public String deleteAlbum() throws MusicLibraryException {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Deleting album: " + album.getArtist() + " " + album.getTitle());
@@ -238,7 +238,7 @@ public class AlbumController implements Serializable {
 		this.artistId = artistId;
 	}
 
-	public Artist getArtist() throws ArtistNotFoundException {
+	public Artist getArtist() throws MusicLibraryException {
 
 		if (artist == null || !artist.getId().equals(getArtistId())) {
 			if (-1 == getArtistId()) {
@@ -267,7 +267,7 @@ public class AlbumController implements Serializable {
 
 	}
 
-	public String saveArtist() throws InvalidArtistException, ArtistNotFoundException {
+	public String saveArtist() throws MusicLibraryException {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Saving artist: " + artist.getId() + " " + artist.getName());
@@ -283,10 +283,10 @@ public class AlbumController implements Serializable {
 
 	}
 
-	public String deleteArtist() throws ArtistNotFoundException, InvalidArtistException {
+	public String deleteArtist() throws MusicLibraryException {
 
 		musicLibraryService.deleteArtist(new Artist(getArtistId()));
-		
+
 		return "artistlist";
 	}
 

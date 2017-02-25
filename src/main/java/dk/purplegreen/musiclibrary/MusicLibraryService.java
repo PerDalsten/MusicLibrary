@@ -22,7 +22,7 @@ public class MusicLibraryService {
 	@Inject
 	private AlbumValidator albumValidator;
 
-	public Album getAlbum(Integer id) throws AlbumNotFoundException {
+	public Album getAlbum(Integer id) throws MusicLibraryException {
 		Album result = albumDAO.find(id);
 		if (result == null)
 			throw new AlbumNotFoundException("Album with id: " + id + " does not exist.");
@@ -37,7 +37,7 @@ public class MusicLibraryService {
 		return albumDAO.find(artist, title, year);
 	}
 
-	public Album createAlbum(Album album) throws ArtistNotFoundException, InvalidAlbumException {
+	public Album createAlbum(Album album) throws MusicLibraryException {
 
 		albumValidator.validate(album);
 
@@ -49,7 +49,7 @@ public class MusicLibraryService {
 	}
 
 	public Album updateAlbum(Album album)
-			throws AlbumNotFoundException, ArtistNotFoundException, InvalidAlbumException {
+			throws MusicLibraryException {
 
 		albumValidator.validate(album);
 
@@ -60,7 +60,7 @@ public class MusicLibraryService {
 		return albumDAO.save(album);
 	}
 
-	public void deleteAlbum(Album album) throws AlbumNotFoundException {
+	public void deleteAlbum(Album album) throws MusicLibraryException {
 
 		album = getAlbum(album.getId());
 
@@ -73,7 +73,7 @@ public class MusicLibraryService {
 		}
 	}
 
-	public Artist getArtist(Integer id) throws ArtistNotFoundException {
+	public Artist getArtist(Integer id) throws MusicLibraryException {
 		Artist result = artistDAO.find(id);
 		if (result == null)
 			throw new ArtistNotFoundException("Artist with id: " + id + " does not exist.");
@@ -84,7 +84,7 @@ public class MusicLibraryService {
 		return artistDAO.getAllArtists();
 	}
 
-	public Artist createArtist(Artist artist) throws InvalidArtistException {
+	public Artist createArtist(Artist artist) throws MusicLibraryException {
 
 		artistValidator.validate(artist);
 
@@ -92,7 +92,7 @@ public class MusicLibraryService {
 		return artistDAO.save(artist);
 	}
 
-	public Artist updateArtist(Artist artist) throws ArtistNotFoundException, InvalidArtistException {
+	public Artist updateArtist(Artist artist) throws MusicLibraryException {
 
 		artistValidator.validate(artist);
 
@@ -100,7 +100,7 @@ public class MusicLibraryService {
 		return artistDAO.save(artist);
 	}
 
-	public void deleteArtist(Artist artist) throws ArtistNotFoundException, InvalidArtistException {
+	public void deleteArtist(Artist artist) throws MusicLibraryException {
 
 		artist = getArtist(artist.getId());
 
@@ -111,7 +111,7 @@ public class MusicLibraryService {
 		artistDAO.delete(artist);
 	}
 
-	public List<Album> getAlbums(Artist artist) throws ArtistNotFoundException {
+	public List<Album> getAlbums(Artist artist) throws MusicLibraryException {
 		
 		artist = getArtist(artist.getId());
 		

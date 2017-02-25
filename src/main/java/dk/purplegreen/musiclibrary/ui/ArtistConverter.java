@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dk.purplegreen.musiclibrary.ArtistNotFoundException;
+import dk.purplegreen.musiclibrary.MusicLibraryException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Artist;
 
@@ -28,7 +28,7 @@ public class ArtistConverter implements Converter {
 	public Object getAsObject(FacesContext fc, UIComponent component, String id) {
 		try {
 			return musicLibraryService.getArtist(Integer.parseInt(id));
-		} catch (NumberFormatException | ArtistNotFoundException e) {
+		} catch (NumberFormatException | MusicLibraryException e) {
 			log.error("Exception caught in Artist converter", e);
 			return null;
 		}

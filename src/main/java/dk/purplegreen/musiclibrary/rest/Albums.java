@@ -17,9 +17,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import dk.purplegreen.musiclibrary.MusicLibraryException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
@@ -27,8 +24,6 @@ import dk.purplegreen.musiclibrary.model.Album;
 @Path("/albums")
 @RequestScoped
 public class Albums {
-
-	private static final Logger log = LogManager.getLogger(Albums.class);
 
 	@Inject
 	MusicLibraryService service;

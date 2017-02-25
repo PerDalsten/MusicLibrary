@@ -14,10 +14,6 @@ import javax.faces.event.ExceptionQueuedEventContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dk.purplegreen.musiclibrary.AlbumNotFoundException;
-import dk.purplegreen.musiclibrary.ArtistNotFoundException;
-import dk.purplegreen.musiclibrary.InvalidAlbumException;
-import dk.purplegreen.musiclibrary.InvalidArtistException;
 import dk.purplegreen.musiclibrary.MusicLibraryException;
 
 public class UIExceptionHandler extends ExceptionHandlerWrapper {
