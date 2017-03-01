@@ -10,12 +10,13 @@
 	<url>http://www.purplegreen.dk/musiclibrary</url>
 
 	<properties>
-	    <log4j.version>2.8</log4j.version>
+		<log4j.version>2.8</log4j.version>
 		<derby.version>10.13.1.1</derby.version>
 		<eclipselink.version>2.6.4</eclipselink.version>
-		<junit.version>4.12</junit.version>		
+		<junit.version>4.12</junit.version>
 		<mockito.version>2.7.4</mockito.version>
 		<jacoco.version>0.7.9</jacoco.version>
+		<jersey.version>2.25.1</jersey.version>
 	</properties>
 
 	<build>
@@ -27,7 +28,7 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
-			</plugin>
+			</plugin>			
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -55,7 +56,7 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>				
+				<artifactId>maven-surefire-report-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
@@ -63,7 +64,7 @@
 				<version>${jacoco.version}</version>
 				<reportSets>
 					<reportSet>
-						<reports>						
+						<reports>
 							<report>report</report>
 						</reports>
 					</reportSet>
@@ -108,5 +109,17 @@
 			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+			<artifactId>jersey-test-framework-provider-inmemory</artifactId>
+			<version>${jersey.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${jersey.version}</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 </project>
