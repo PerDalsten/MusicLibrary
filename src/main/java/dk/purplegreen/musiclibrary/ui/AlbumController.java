@@ -12,9 +12,6 @@ import javax.inject.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dk.purplegreen.musiclibrary.AlbumNotFoundException;
-import dk.purplegreen.musiclibrary.ArtistNotFoundException;
-import dk.purplegreen.musiclibrary.InvalidAlbumException;
 import dk.purplegreen.musiclibrary.MusicLibraryException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
 import dk.purplegreen.musiclibrary.model.Album;
@@ -38,12 +35,12 @@ public class AlbumController implements Serializable {
 	private Integer albumYear;
 	private List<Album> albums = new ArrayList<>();
 
-	// Album edit
-	private Integer albumId;
+	private List<Artist> artists;
+
+	// Current album
 	private Album album;
 
-	// Artist edit
-	private Integer artistId;
+	// Current artist
 	private Artist artist;
 
 	public String getAlbumArtist() {
@@ -70,17 +67,6 @@ public class AlbumController implements Serializable {
 		this.albumYear = year;
 	}
 
-	public Integer getAlbumId() {
-		return albumId;
-	}
-
-	public void setAlbumId(Integer albumId) {
-		if (log.isDebugEnabled()) {
-			log.debug("Calling setAlbumId: " + albumId);
-		}
-		this.albumId = albumId;
-	}
-
 	public List<Album> getAlbums() {
 		return albums;
 	}
@@ -99,34 +85,11 @@ public class AlbumController implements Serializable {
 		return "index";
 	}
 
-	public String create() {
-		album = new Album();
-		return "edit";
-	}
-
+	
 	public Album getAlbum() throws MusicLibraryException {
 
-		if (album == null || !album.getId().equals(getAlbumId())) {
-			if (-1 == getAlbumId()) {
-
-				if (log.isDebugEnabled()) {
-					log.debug("Creating new album");
-				}
-
-				album = new Album();
-				album.setId(-1);
-				album.setArtist(new Artist());
-			} else {
-				if (log.isDebugEnabled()) {
-					log.debug("Reading album with id: " + getAlbumId());
-				}
-
-				album = musicLibraryService.getAlbum(getAlbumId());
-			}
-		} else {
-			if (log.isDebugEnabled()) {
-				log.debug("Already has copy of album with id: " + getAlbumId());
-			}
+		if (log.isDebugEnabled()) {
+			log.debug("Getting album: " + album);
 		}
 		return album;
 	}
@@ -136,31 +99,23 @@ public class AlbumController implements Serializable {
 			log.debug("Saving album: " + album.getArtist() + " " + album.getTitle());
 		}
 
-		try {
-			if (album.getId() == -1) {
-				album.setId(null);
-				album = musicLibraryService.createAlbum(album);
-				// Need to set id to new value or -1 (empty) will be
-				// shown/passed as query parameter to album.
-				setAlbumId(album.getId());
-			} else {
-				album = musicLibraryService.updateAlbum(album);
+		if (album.getId() == -1) {
 
-				// If the updated album is in the search list, replace it with
-				// updated album
-				for (ListIterator<Album> iter = albums.listIterator(); iter.hasNext();) {
-					if (iter.next().equals(album)) {
-						iter.set(album);
-						if (log.isDebugEnabled()) {
-							log.debug("Replacing album in search list");
-						}
-						break;
+			album = musicLibraryService.createAlbum(album);
+		} else {
+			album = musicLibraryService.updateAlbum(album);
+
+			// If the updated album is in the search list, replace it with
+			// updated album
+			for (ListIterator<Album> iter = albums.listIterator(); iter.hasNext();) {
+				if (iter.next().equals(album)) {
+					iter.set(album);
+					if (log.isDebugEnabled()) {
+						log.debug("Replacing album in search list");
 					}
+					break;
 				}
 			}
-		} catch (AlbumNotFoundException | ArtistNotFoundException | InvalidAlbumException e) {
-			album = null;
-			throw e;
 		}
 
 		return "album";
@@ -180,19 +135,23 @@ public class AlbumController implements Serializable {
 		return "index";
 	}
 
-	public String cancelEditAlbum() {
+	public String cancelEditAlbum() throws MusicLibraryException {
 		if (log.isDebugEnabled()) {
 			log.debug("Cancel album edit: " + album.getArtist().getName() + " " + album.getTitle());
 		}
 
 		String result;
+
 		if (album.getId() == -1) {
+			// New album - back to index
 			result = "index";
+
 		} else {
+			// Existing album - refresh from service to reset any changes and
+			// return to album
+			album = musicLibraryService.getAlbum(album.getId());
 			result = "album";
 		}
-
-		album = null;
 
 		return result;
 	}
@@ -227,44 +186,16 @@ public class AlbumController implements Serializable {
 			log.debug("Get artists");
 		}
 
-		return musicLibraryService.getArtists();
-	}
-
-	public Integer getArtistId() {
-		return artistId;
-	}
-
-	public void setArtistId(Integer artistId) {
-		this.artistId = artistId;
+		return artists;
 	}
 
 	public Artist getArtist() throws MusicLibraryException {
 
-		if (artist == null || !artist.getId().equals(getArtistId())) {
-			if (-1 == getArtistId()) {
-
-				if (log.isDebugEnabled()) {
-					log.debug("Creating new artist");
-				}
-
-				artist = new Artist();
-				artist.setId(-1);
-
-			} else {
-				if (log.isDebugEnabled()) {
-					log.debug("Reading artist with id: " + getArtistId());
-				}
-
-				artist = musicLibraryService.getArtist(getArtistId());
-			}
-		} else {
-			if (log.isDebugEnabled()) {
-				log.debug("Already has copy of artist with id: " + getArtistId());
-			}
+		if (log.isDebugEnabled()) {
+			log.debug("Get artist: " + artist);
 		}
 
 		return artist;
-
 	}
 
 	public String saveArtist() throws MusicLibraryException {
@@ -273,38 +204,112 @@ public class AlbumController implements Serializable {
 			log.debug("Saving artist: " + artist.getId() + " " + artist.getName());
 		}
 
+		String result;
+
 		if (artist.getId() == -1) {
 			musicLibraryService.createArtist(artist);
-			return "edit";
+			result = "edit";
 		} else {
 			musicLibraryService.updateArtist(artist);
-			return "artistlist";
+			result = "artistlist";
 		}
 
+		artists = musicLibraryService.getArtists();
+
+		return result;
 	}
 
 	public String deleteArtist() throws MusicLibraryException {
 
-		musicLibraryService.deleteArtist(new Artist(getArtistId()));
+		if (log.isDebugEnabled()) {
+			log.debug("Deleting artist: " + artist);
+		}
+
+		musicLibraryService.deleteArtist(artist);
+
+		artists = musicLibraryService.getArtists();
 
 		return "artistlist";
 	}
 
-	public String cancelEditArtist() {
+	public String cancelEditArtist() throws MusicLibraryException {
 
-		if (getArtistId() == -1) {
+		if (artist.getId() == -1) {
 			return "edit";
 		} else {
+			artist = musicLibraryService.getArtist(artist.getId());
+
 			return "artistlist";
 		}
 	}
 
 	public String artistsOK() {
+		return "edit";
+	}
 
-		if (albumId == null) {
-			return "index";
-		} else {
-			return "edit";
+	public String viewAlbum(Album album) {
+		if (log.isDebugEnabled()) {
+			log.debug("View album: " + album);
 		}
+		this.album = album;
+		return "album";
+	}
+
+	public String newAlbum() {
+
+		if (log.isDebugEnabled()) {
+			log.debug("New album");
+		}
+
+		if (artists == null) {
+			artists = musicLibraryService.getArtists();
+		}
+		
+		this.album = new Album(-1);
+		return "edit";
+	}
+
+	public String editAlbum() {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Edit album: " + album);
+		}
+
+		if (artists == null) {
+			artists = musicLibraryService.getArtists();
+		}
+
+		return "edit";
+	}
+
+	public String newArtist() {
+		if (log.isDebugEnabled()) {
+			log.debug("New artist");
+		}
+
+		this.artist = new Artist(-1);
+		return "artist";
+	}
+
+	public String editArtists() {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Edit artists");
+		}
+		if (artists == null) {
+			artists = musicLibraryService.getArtists();
+		}
+
+		return "artistlist";
+	}
+
+	public String editArtist(Artist artist) {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Edit artist: " + artist);
+		}
+		this.artist = artist;
+
+		return "artist";
 	}
 }

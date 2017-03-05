@@ -9,10 +9,6 @@
 	<h:outputStylesheet library="styles" name="musiclibrary.css" />
 </h:head>
 
-<f:metadata>
-	<f:viewParam name="albumId" value="#{albumController.albumId}" />
-</f:metadata>
-
 <h:body>
 
 	<h:form class="edit">
@@ -29,34 +25,34 @@
 
 		<hr />
 
-		<div class="editAlbum">
+		<div>
 
 			<h:outputLabel for="artist" value="Artist: " />
 			<div class="editAlbumArtist">
-				<h:selectOneMenu value="#{albumController.album.artist}" converter="#{artistConverter}">
-				
+				<h:selectOneMenu value="#{albumController.album.artist}"
+					converter="#{artistConverter}">
+
 					<f:selectItems value="#{albumController.artists}" var="artist"
 						itemLabel="#{artist.name}" itemValue="#{artist}" />
 				</h:selectOneMenu>
-				<h:link outcome="artist" title="New Artist">
-					<f:param name="artistId" value="-1" />
-					<h:graphicImage library="images" name="new.png"
-						styleClass="smallButton" />
-				</h:link>
-				<h:link outcome="artistlist" title="Edit Artists">
-					<h:graphicImage library="images" name="edit.png"
-						styleClass="smallButton" />
-				</h:link>
-
+				<h:commandButton action="#{albumController.newArtist}"
+					image="resources/images/new.png" styleClass="smallButton"
+					title="New Artist">
+				</h:commandButton>
+				<h:commandButton action="#{albumController.editArtists}"
+					image="resources/images/edit.png" styleClass="smallButton"
+					title="Edit Artists">
+				</h:commandButton>
 			</div>
-			<h:outputLabel for="title" value="Title: " />
-			<h:inputText id="title" value="#{albumController.album.title}"
-				size="50" />
 
-			<h:outputLabel for="year" value="Year: " />
-			<h:inputText id="year" value="#{albumController.album.year}"
-				maxlength="4" size="4" />
-
+			<div class="editAlbum">
+				<h:outputLabel for="title" value="Title: " />
+				<h:inputText id="title" value="#{albumController.album.title}"
+					size="50" />
+				<h:outputLabel for="year" value="Year: " />
+				<h:inputText id="year" value="#{albumController.album.year}"
+					maxlength="4" size="4" />
+			</div>
 		</div>
 
 		<div class="editSongs">

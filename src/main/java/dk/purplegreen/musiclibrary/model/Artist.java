@@ -58,6 +58,16 @@ public class Artist implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+
+		StringBuilder result = new StringBuilder("<");
+		result.append(id);
+		result.append("> ");
+		result.append(name);
+		return result.toString();
+	}
+
+	@Override
 	public int hashCode() {
 
 		if (id == null) {

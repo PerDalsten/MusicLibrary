@@ -9,10 +9,6 @@
 	<h:outputStylesheet library="styles" name="musiclibrary.css" />
 </h:head>
 
-<f:metadata>
-	<f:viewParam name="artistId" value="#{albumController.artistId}" />
-</f:metadata>
-
 <h:body>
 
 	<h:form class="edit">
@@ -20,7 +16,7 @@
 		<h:commandButton action="#{albumController.saveArtist}"
 			image="resources/images/save.png" title="Save Artist">
 		</h:commandButton>
-		<h:commandButton rendered="#{albumController.artistId > 0}"
+		<h:commandButton rendered="#{albumController.artist.id > 0}"
 			action="#{albumController.deleteArtist}"
 			image="resources/images/delete.png" title="Delete Artist">
 		</h:commandButton>

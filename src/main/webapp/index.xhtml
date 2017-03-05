@@ -11,8 +11,6 @@
 
 <h:body>
 
-
-
 	<h:form class="search">
 		<h:outputLabel value="Artist" for="artist" />
 		<h:inputText id="artist" value="#{albumController.albumArtist}" />
@@ -27,26 +25,30 @@
 		<h:commandButton action="#{albumController.clearSearch}"
 			image="resources/images/cancel.png" title="Clear Search">
 		</h:commandButton>
-		<h:link outcome="edit" title="New Album">
-			<f:param name="albumId" value="-1" />
-			<h:graphicImage library="images" name="new.png" />
-		</h:link>
+		<h:commandButton action="#{albumController.newAlbum}"
+			image="resources/images/new.png" title="New Album">
+		</h:commandButton>		
 	</h:form>
 
 
 	<hr />
 
 
-	<h:panelGroup rendered="#{not empty albumController.albums}">
-		<ul>
-			<ui:repeat value="#{albumController.albums}" var="album">
-				<li><h:link value="#{album.artist.name} : #{album.title}"
-						outcome="album.xhtml">
-						<f:param name="albumId" value="#{album.id}" />
-					</h:link></li>
-			</ui:repeat>
-		</ul>
-	</h:panelGroup>
+	<h:form>
+		<h:panelGroup rendered="#{not empty albumController.albums}">
+			<ul class="button-list">
+				<ui:repeat value="#{albumController.albums}" var="album">
+					<li>
+						<h:commandButton action="#{albumController.viewAlbum(album)}"
+							image="resources/images/view.png" styleClass="smallButton"
+							title="View Album">
+						</h:commandButton> 
+						<h:outputText value="#{album.artist.name} : #{album.title}" />
+					</li>
+				</ui:repeat>
+			</ul>
+		</h:panelGroup>
+	</h:form>
 
 </h:body>
 

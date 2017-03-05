@@ -7,18 +7,6 @@ body {
 	color: white;
 }
 
-a:link {
-	color: #00ffff
-}
-
-a:visited {
-	color: #00ccff
-}
-
-a:active {
-	color: #00ffcc
-}
-
 table {
 	border: 0px;
 }
@@ -44,9 +32,6 @@ form.search img {
 
 /* Edit */
 
-div.editAlbum {
-	margin-bottom: 20px;
-}
 
 div.editAlbum input{
 	display: block;
@@ -61,6 +46,7 @@ div.editAlbumArtist img {
 }
 
 div.editSongs {
+	margin-top: 20px;
 	margin-bottom: 20px;
 }
 
@@ -101,4 +87,13 @@ td.title input {
 	width: 100%;
 }
 
+.button-list
+{
+    list-style: none;
+}
+
+.button-list input {
+	margin-right: 10px;
+	vertical-align: middle;
+}
 

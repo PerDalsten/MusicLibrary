@@ -103,6 +103,15 @@ public class Album implements Serializable {
 		getSongs().add(song);
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder("<");
+		result.append(id);
+		result.append("> ");
+		result.append(title);
+		return result.toString();
+	}
+
 	// hashCode and equals implemented to support collections and JSF - do not
 	// use on non-persisted objects
 	@Override

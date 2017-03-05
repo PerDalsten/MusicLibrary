@@ -9,19 +9,18 @@
 	<h:outputStylesheet library="styles" name="musiclibrary.css" />
 </h:head>
 
-<f:metadata>
-	<f:viewParam name="albumId" value="#{albumController.albumId}" />
-</f:metadata>
 
 <h:body>
 
-	<h:link outcome="index.xhtml">
-		<h:graphicImage library="images" name="home.png" title="Home" />
-	</h:link>
-	<h:link outcome="edit" title="Edit Album">
-		<f:param name="albumId" value="#{albumController.album.id}" />
-		<h:graphicImage library="images" name="edit.png" />
-	</h:link>
+	<h:form>
+		<h:link outcome="index.xhtml">
+			<h:graphicImage library="images" name="home.png" title="Home" />
+		</h:link>
+
+		<h:commandButton action="#{albumController.editAlbum}"
+			image="resources/images/edit.png" title="Edit Album">
+		</h:commandButton>
+	</h:form>
 
 	<hr />
 

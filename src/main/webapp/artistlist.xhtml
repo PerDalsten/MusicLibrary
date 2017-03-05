@@ -19,16 +19,22 @@
 
 	<hr />
 
-	<h:panelGroup rendered="#{not empty albumController.artists}">
-		<ul>
-			<ui:repeat value="#{albumController.artists}" var="artist">
-				<li><h:link value="#{artist.name}" outcome="artist.xhtml">
-						<f:param name="artistId" value="#{artist.id}" />
-					</h:link></li>
-			</ui:repeat>
-		</ul>
-	</h:panelGroup>
+	<h:form>
+		<h:panelGroup rendered="#{not empty albumController.artists}">
+			<ul class="button-list">
+				<ui:repeat value="#{albumController.artists}" var="artist">
 
+					<li>
+						<h:commandButton
+							action="#{albumController.editArtist(artist)}"
+							image="resources/images/edit.png" styleClass="smallButton"
+							title="View Album">
+						</h:commandButton> <h:outputText value="#{artist.name}" />
+					</li>
+				</ui:repeat>
+			</ul>
+		</h:panelGroup>
+	</h:form>
 </h:body>
 
 </html>
