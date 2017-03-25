@@ -24,7 +24,7 @@ import org.apache.logging.log4j.Logger;
 
 @Entity
 @Table(name = "ALBUM")
-@NamedQueries({ @NamedQuery(name = "findAllAlbums", query = "SELECT a FROM Album a"),
+@NamedQueries({ @NamedQuery(name = "findAllAlbums", query = "SELECT a FROM Album a ORDER BY a.title"),
 		@NamedQuery(name = "findByArtist", query = "SELECT a FROM Album a WHERE a.artist = :artist"),
 		@NamedQuery(name = "findByTitle", query = "SELECT a FROM Album a WHERE a.title = :title") })
 public class Album implements Serializable {
