@@ -24,7 +24,7 @@ Copy derbyclient.jar to lib/derby (create) directory in server.
 	</library>
 	<dataSource jndiName="jdbc/MusicLibraryDS">
 		<jdbcDriver libraryRef="DerbyLib"/>
-		<properties.derby.client createDatabase="false" databaseName="musiclibrarydb" password="{xor}KzosKw==" user="musiclibrary"/>
+		<properties.derby.client createDatabase="false" databaseName="musiclibrarydb" password="{xor}MiosNjwzNj0tPi0m" user="musiclibrary"/>
 	</dataSource>
 
     <webApplication id="MusicLibrary" location="MusicLibrary.war" name="MusicLibrary"/>
@@ -42,7 +42,7 @@ Deploy derbyclient.jar as application and add datasource.
     <driver>derbyclient.jar</driver>
     <security>
     	<user-name>musiclibrary</user-name>
-        <password>test</password>
+        <password>musiclibrary</password>
     </security>
 </datasource>
 
