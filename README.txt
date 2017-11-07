@@ -17,7 +17,7 @@ Copy derbyclient.jar to lib/derby (create) directory in server.
 	
 	<logging traceSpecification="JPA=all" traceFileName="JPA.log" maxFileSize="20" maxFiles="5" traceFormat="BASIC" />
 	
-	<cors allowedHeaders="Content-Type" allowedMethods="GET,POST,PUT,DELETE,HEAD,OPTIONS" allowedOrigins="http://localhost" domain="/MusicLibrary/rest"/>    
+	<cors allowedOrigins="http://localhost,http://localhost:8080" domain="/MusicLibrary/rest" allowedMethods="GET,POST,PUT,DELETE,HEAD,OPTIONS" allowedHeaders="Content-Type"></cors>
 	
 	<library id="DerbyLib">
 		<fileset dir="${server.config.dir}/lib/derby" includes="*.jar"/>
@@ -60,7 +60,7 @@ Add to logging subsystem (if using spy on datasource):
 </logger>
 
 
-Add to <subsystem xmlns="urn:jboss:domain:transactions:3.0"> to support CORS (client deployed on different server): 
+Add to <subsystem xmlns="urn:jboss:domain:undertow:3.1"> to support CORS (client deployed on different server): 
 
         ... 
 	    <filter-ref name="Access-Control-Allow-Origin"/>
