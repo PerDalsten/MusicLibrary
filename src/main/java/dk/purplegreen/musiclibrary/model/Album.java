@@ -23,7 +23,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Entity
-@Table(name = "ALBUM")
+@Table(name = "album")
 @NamedQueries({ @NamedQuery(name = "findAllAlbums", query = "SELECT a FROM Album a ORDER BY a.title"),
 		@NamedQuery(name = "findByArtist", query = "SELECT a FROM Album a WHERE a.artist = :artist"),
 		@NamedQuery(name = "findByTitle", query = "SELECT a FROM Album a WHERE a.title = :title") })
@@ -35,11 +35,11 @@ public class Album implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@ManyToOne
-	@JoinColumn(name = "ARTIST_ID", nullable = false)
+	@JoinColumn(name = "artist_id", nullable = false)
 	private Artist artist;
-	@Column(name = "ALBUM_TITLE", nullable = false)
+	@Column(name = "album_title", nullable = false)
 	private String title;
-	@Column(name = "ALBUM_YEAR", nullable = false)
+	@Column(name = "album_year", nullable = false)
 	private Integer year;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "album", orphanRemoval = true, fetch = FetchType.EAGER)
 	@OrderBy("disc, track")

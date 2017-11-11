@@ -27,6 +27,16 @@ Copy derbyclient.jar to lib/derby (create) directory in server.
 		<properties.derby.client createDatabase="false" databaseName="musiclibrarydb" password="{xor}MiosNjwzNj0tPi0m" user="musiclibrary"/>
 	</dataSource>
 
+    <!-- MySQL
+    <library id="MySQLLib">
+    	<fileset dir="lib/mysql" includes="*.jar"/>
+    </library>
+    <dataSource jndiName="jdbc/MusicLibraryDS">
+		<jdbcDriver libraryRef="MySQLLib"/>		
+		<properties URL="jdbc:mysql://localhost" databaseName="musiclibrarydb" password="{xor}MiosNjwzNj0tPi0m" portNumber="3306" serverName="localhost" user="musiclibrary"/>
+	</dataSource>
+    -->
+
     <webApplication id="MusicLibrary" location="MusicLibrary.war" name="MusicLibrary"/>
 </server>    
 
@@ -49,15 +59,27 @@ Deploy derbyclient.jar as application and add datasource.
 or run scripts in src/main/scripts/wildfly as needed e.g.
 
 
-cd $JAVA_HOME/db/lib; /path/to/jboss-cli.sh --file=/path/to/create-database-driver.cli 
+cd $JAVA_HOME/db/lib; /path/to/jboss-cli.sh --file=/path/to/create-derby-database-driver.cli 
 
-/path/to/jboss-cli.sh --file=/path/to/create-datasource.cli
+/path/to/jboss-cli.sh --file=/path/to/create-derby-datasource.cli
 
 Add to logging subsystem (if using spy on datasource):
 
 <logger category="jboss.jdbc.spy">
 	<level name="TRACE"/>
 </logger>
+
+
+For MySQL install driver using script and use:
+
+<datasource jndi-name="java:/jdbc/MusicLibraryDS" pool-name="MusicLibrary">
+    <connection-url>jdbc:mysql://localhost:3306/musiclibrarydb</connection-url>
+    <driver>mysql</driver>
+    <security>
+        <user-name>musiclibrary</user-name>
+        <password>musiclibrary</password>
+    </security>
+</datasource>
 
 
 Add to <subsystem xmlns="urn:jboss:domain:undertow:3.1"> to support CORS (client deployed on different server): 

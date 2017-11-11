@@ -1,0 +1,3 @@
+connect localhost
+
+data-source add --jndi-name=java:/jdbc/MusicLibraryDS --name=MusicLibrary --connection-url=jdbc:mysql://localhost:3306/musiclibrarydb --driver-name=mysql --user-name=musiclibrary --password=musiclibrary --use-ccm=true --spy=true

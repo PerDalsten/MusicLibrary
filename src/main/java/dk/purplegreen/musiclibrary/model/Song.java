@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "SONG")
+@Table(name = "song")
 public class Song implements Serializable {
 
 	private static final long serialVersionUID = 5642619570047715383L;
@@ -21,12 +21,12 @@ public class Song implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "SONG_TITLE", nullable = false)
+	@Column(name = "song_title", nullable = false)
 	private String title;
 	private Integer track;
 	private Integer disc;
 	@ManyToOne
-	@JoinColumn(name = "ALBUM_ID", nullable = false)
+	@JoinColumn(name = "album_id", nullable = false)
 	private Album album;
 
 	public Song() {

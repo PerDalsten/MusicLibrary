@@ -1,0 +1,9 @@
+connect localhost
+ 
+batch
+ 
+module add --name=mysql.jdbc --resources=mysql-connector-java-5.1.41.jar --dependencies=javax.api,javax.transaction.api
+  
+/subsystem=datasources/jdbc-driver=mysql:add(driver-name="mysql",driver-module-name="mysql.jdbc",driver-class-name=com.mysql.jdbc.Driver)
+
+run-batch
