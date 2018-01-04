@@ -17,3 +17,6 @@ logs
 
 src/test/resources/database
 /.tern-project
+
+.idea
+*.iml
