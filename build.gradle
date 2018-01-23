@@ -1,0 +1,31 @@
+plugins {
+  id "org.sonarqube" version "2.6"
+}
+
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+ext.jerseyVersion = '2.26'
+ext.eclipseLinkVersion = '2.7.0'
+
+dependencies {
+    providedCompile "javax:javaee-api:7.0"
+
+    compile 'org.apache.logging.log4j:log4j-core:2.8.2'
+
+    testCompile "junit:junit:4.12"
+    testCompile "org.mockito:mockito-core:2.7.4"
+    testCompile "org.apache.derby:derby:10.13.1.1"
+    testCompile "org.eclipse.persistence:eclipselink:${eclipseLinkVersion}"
+    testCompile "org.eclipse.persistence:org.eclipse.persistence.jpa:${eclipseLinkVersion}"
+    testCompile "org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-inmemory:${jerseyVersion}"
+    testCompile "org.glassfish.jersey.inject:jersey-hk2:${jerseyVersion}"
+    testCompile "org.glassfish.jersey.media:jersey-media-json-jackson:${jerseyVersion}"
+}
