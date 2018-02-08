@@ -3,6 +3,8 @@ package dk.purplegreen.musiclibrary;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 
 import dk.purplegreen.musiclibrary.model.Album;
@@ -22,6 +24,7 @@ public class MusicLibraryService {
 	@Inject
 	private AlbumValidator albumValidator;
 
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public Album getAlbum(Integer id) throws MusicLibraryException {
 		Album result = albumDAO.find(id);
 		if (result == null)
@@ -29,14 +32,17 @@ public class MusicLibraryService {
 		return result;
 	}
 
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<Album> getAlbums() {
 		return albumDAO.getAllAlbums();
 	}
 
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<Album> findAlbums(String artist, String title, Integer year) {
 		return albumDAO.find(artist, title, year);
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Album createAlbum(Album album) throws MusicLibraryException {
 
 		albumValidator.validate(album);
@@ -48,8 +54,8 @@ public class MusicLibraryService {
 		return albumDAO.save(album);
 	}
 
-	public Album updateAlbum(Album album)
-			throws MusicLibraryException {
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Album updateAlbum(Album album) throws MusicLibraryException {
 
 		albumValidator.validate(album);
 
@@ -60,6 +66,7 @@ public class MusicLibraryService {
 		return albumDAO.save(album);
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void deleteAlbum(Album album) throws MusicLibraryException {
 
 		album = getAlbum(album.getId());
@@ -73,6 +80,7 @@ public class MusicLibraryService {
 		}
 	}
 
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public Artist getArtist(Integer id) throws MusicLibraryException {
 		Artist result = artistDAO.find(id);
 		if (result == null)
@@ -80,10 +88,12 @@ public class MusicLibraryService {
 		return result;
 	}
 
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<Artist> getArtists() {
 		return artistDAO.getAllArtists();
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Artist createArtist(Artist artist) throws MusicLibraryException {
 
 		artistValidator.validate(artist);
@@ -92,6 +102,7 @@ public class MusicLibraryService {
 		return artistDAO.save(artist);
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Artist updateArtist(Artist artist) throws MusicLibraryException {
 
 		artistValidator.validate(artist);
@@ -100,6 +111,7 @@ public class MusicLibraryService {
 		return artistDAO.save(artist);
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void deleteArtist(Artist artist) throws MusicLibraryException {
 
 		artist = getArtist(artist.getId());
@@ -111,10 +123,11 @@ public class MusicLibraryService {
 		artistDAO.delete(artist);
 	}
 
+	@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 	public List<Album> getAlbums(Artist artist) throws MusicLibraryException {
-		
+
 		artist = getArtist(artist.getId());
-		
+
 		return albumDAO.findByArtist(artist);
 	}
 }
