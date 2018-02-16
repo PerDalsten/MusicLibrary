@@ -98,7 +98,7 @@ Add to <subsystem xmlns="urn:jboss:domain:undertow:3.1"> to support CORS (client
 
 
 Glassfish config
-==============
+================
 
 Add to domain.xml:
 
@@ -117,6 +117,11 @@ or use asadmin to create datasource:
 ./asadmin create-jdbc-connection-pool --restype javax.sql.DataSource --datasourceclassname org.apache.derby.jdbc.ClientDataSource --property "ServerName=localhost:PortNumber=1527:DatabaseName=musiclibrarydb:User=musiclibrary:Password=MusicLibrary:ConnectionAttributes=;create\=false" MusicLibrary 
 
 ./asadmin create-jdbc-resource --connectionpoolid MusicLibrary jdbc/MusicLibraryDS
+
+Due to a bug in Glassfish 4.1 it is necessary to patch glassfish/modules/org.eclipse.persistence.moxy.jar. Append the following
+to META-INF/MANIFEST.MF Import-Package:
+
+,org.xml.sax.helpers,javax.xml.parsers;resolution:=optional,javax.naming;resolution:=optional
 
 
 Logging
