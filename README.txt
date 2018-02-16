@@ -52,7 +52,7 @@ Deploy derbyclient.jar as application and add datasource.
     <driver>derbyclient.jar</driver>
     <security>
     	<user-name>musiclibrary</user-name>
-        <password>musiclibrary</password>
+    <password>musiclibrary</password>
     </security>
 </datasource>
 
@@ -97,6 +97,27 @@ Add to <subsystem xmlns="urn:jboss:domain:undertow:3.1"> to support CORS (client
      </filters>
 
 
+Glassfish config
+==============
+
+Add to domain.xml:
+
+   <jdbc-connection-pool datasource-classname="org.apache.derby.jdbc.ClientDataSource" name="MusicLibrary" res-type="javax.sql.DataSource">
+      <property name="PortNumber" value="1527"></property>
+      <property name="Password" value="MusicLibrary"></property>
+      <property name="ServerName" value="localhost"></property>
+      <property name="ConnectionAttributes" value=";create=false"></property>
+      <property name="DatabaseName" value="musiclibrarydb"></property>
+      <property name="User" value="musiclibrary"></property>
+    </jdbc-connection-pool>
+    <jdbc-resource pool-name="MusicLibrary" jndi-name="jdbc/MusicLibraryDS"></jdbc-resource>
+
+or use asadmin to create datasource:
+
+./asadmin create-jdbc-connection-pool --restype javax.sql.DataSource --datasourceclassname org.apache.derby.jdbc.ClientDataSource --property "ServerName=localhost:PortNumber=1527:DatabaseName=musiclibrarydb:User=musiclibrary:Password=MusicLibrary:ConnectionAttributes=;create\=false" MusicLibrary 
+
+./asadmin create-jdbc-resource --connectionpoolid MusicLibrary jdbc/MusicLibraryDS
+
 
 Logging
 =======
@@ -115,6 +136,14 @@ or run
 
 /path/to/jboss-cli.sh --file=/path/to/set-logdir.cli
 
+Glassfish: add to domain.xml: 
+
+    <system-property name="dk.purplegreen.logdir" value="../logs"></system-property>
+
+or run
+
+./asadmin create-system-properties dk.purplegreen.logdir=../logs 
+
 
 URL's
 =====
@@ -126,7 +155,7 @@ By artist: http://localhost:9080/MusicLibrary/rest/artists/83/albums
 
 UI:http://localhost:9080/MusicLibrary/albums/index.xhtml (or just http://localhost:9080/MusicLibrary)
 
-For Wildfly default port is 8080.
+For Wildfly and Glassfish default port is 8080.
 
 
 QA

@@ -2,6 +2,7 @@ package dk.purplegreen.musiclibrary.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -13,11 +14,13 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import dk.purplegreen.musiclibrary.MusicLibraryException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
+import dk.purplegreen.musiclibrary.model.Album;
 import dk.purplegreen.musiclibrary.model.Artist;
 
 @Path("/artists")
@@ -38,7 +41,8 @@ public class Artists {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getArtists() {
-		return Response.ok(service.getArtists()).build();
+		return Response.ok(new GenericEntity<List<Artist>>(service.getArtists()) {
+		}).build();
 	}
 
 	@POST
@@ -72,7 +76,7 @@ public class Artists {
 	@Path("/{id}/albums")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getArtistAlbums(@PathParam("id") Integer id) throws MusicLibraryException {
-
-		return Response.ok(service.getAlbums(new Artist(id))).build();
+		return Response.ok(new GenericEntity<List<Album>>(service.getAlbums(new Artist(id))) {
+		}).build();
 	}
 }

@@ -2,6 +2,8 @@ package dk.purplegreen.musiclibrary.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -14,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -32,8 +35,7 @@ public class Albums {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAlbum(@PathParam("id") Integer id) throws MusicLibraryException {
-
-		return Response.ok(service.getAlbum(id)).build();
+		return Response.ok(new AlbumResource(service.getAlbum(id))).build();
 	}
 
 	@GET
@@ -42,30 +44,36 @@ public class Albums {
 			@QueryParam("year") Integer year) {
 
 		if (artist == null && title == null && year == null)
-			return Response.ok(service.getAlbums()).build();
+			return Response.ok(new GenericEntity<List<AlbumResource>>(
+					service.getAlbums().stream().map(album -> new AlbumResource(album)).collect(Collectors.toList())) {
+			}).build();
 		else
-			return Response.ok(service.findAlbums(artist, title, year)).build();
+			return Response.ok(new GenericEntity<List<AlbumResource>>(service.findAlbums(artist, title, year).stream()
+					.map(album -> new AlbumResource(album)).collect(Collectors.toList())) {
+			}).build();
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createAlbum(Album album) throws MusicLibraryException, URISyntaxException {
+	public Response createAlbum(AlbumResource album) throws MusicLibraryException, URISyntaxException {
 
-		album = service.createAlbum(album);
-		return Response.created(new URI("albums/" + album.getId())).entity(album).build();
+		Album a = service.createAlbum(album.getAlbum());
+		return Response.created(new URI("albums/" + a.getId())).entity(a).build();
 	}
 
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateAlbum(@PathParam("id") Integer id, Album album) throws MusicLibraryException {
+	public Response updateAlbum(@PathParam("id") Integer id, AlbumResource album) throws MusicLibraryException {
 
-		album.setId(id);
+		Album a = album.getAlbum();
 
-		album = service.updateAlbum(album);
-		return Response.ok(album).build();
+		a.setId(id);
+
+		a = service.updateAlbum(a);
+		return Response.ok(a).build();
 	}
 
 	@DELETE
