@@ -17,8 +17,6 @@ Copy derbyclient.jar to lib/derby (create) directory in server.
 	
 	<logging traceSpecification="JPA=all" traceFileName="JPA.log" maxFileSize="20" maxFiles="5" traceFormat="BASIC" />
 	
-	<cors allowedOrigins="http://localhost,http://localhost:8080" domain="/MusicLibrary/rest" allowedMethods="GET,POST,PUT,DELETE,HEAD,OPTIONS" allowedHeaders="Content-Type"></cors>
-	
 	<library id="DerbyLib">
 		<fileset dir="${server.config.dir}/lib/derby" includes="*.jar"/>
 	</library>
@@ -82,21 +80,6 @@ For MySQL install driver using script and use:
 </datasource>
 
 
-Add to <subsystem xmlns="urn:jboss:domain:undertow:3.1"> to support CORS (client deployed on different server): 
-
-        ... 
-	    <filter-ref name="Access-Control-Allow-Origin"/>
- 	    <filter-ref name="Access-Control-Allow-Methods"/>
-	    <filter-ref name="Access-Control-Allow-Headers"/>
-    </host>
-
-        ...
-		<response-header name="Access-Control-Allow-Origin" header-name="Access-Control-Allow-Origin" header-value="http://localhost"/>
-        <response-header name="Access-Control-Allow-Methods" header-name="Access-Control-Allow-Methods" header-value="GET, POST, PUT, DELETE, HEAD, OPTIONS"/>
-        <response-header name="Access-Control-Allow-Headers" header-name="Access-Control-Allow-Headers" header-value="accept, content-type"/>
-     </filters>
-
-
 Glassfish config
 ================
 
@@ -104,7 +87,7 @@ Add to domain.xml:
 
    <jdbc-connection-pool datasource-classname="org.apache.derby.jdbc.ClientDataSource" name="MusicLibrary" res-type="javax.sql.DataSource">
       <property name="PortNumber" value="1527"></property>
-      <property name="Password" value="MusicLibrary"></property>
+      <property name="Password" value="musiclibrary"></property>
       <property name="ServerName" value="localhost"></property>
       <property name="ConnectionAttributes" value=";create=false"></property>
       <property name="DatabaseName" value="musiclibrarydb"></property>
