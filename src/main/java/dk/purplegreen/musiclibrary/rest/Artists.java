@@ -3,6 +3,7 @@ package dk.purplegreen.musiclibrary.rest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -76,7 +77,8 @@ public class Artists {
 	@Path("/{id}/albums")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getArtistAlbums(@PathParam("id") Integer id) throws MusicLibraryException {
-		return Response.ok(new GenericEntity<List<Album>>(service.getAlbums(new Artist(id))) {
+		return Response.ok(new GenericEntity<List<AlbumResource>>(service.getAlbums(new Artist(id)).stream()
+				.map(album -> new AlbumResource(album)).collect(Collectors.toList())) {
 		}).build();
 	}
 }
