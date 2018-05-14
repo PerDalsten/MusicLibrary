@@ -43,7 +43,7 @@ public class ArtistsTest extends JerseyTest {
 
 		Response response = target("/artists/42").request().get();
 
-		assertEquals(response.getStatus(), 200);
+		assertEquals(200, response.getStatus());
 
 		assertEquals("Wrong artist", "Iron Maiden", response.readEntity(Artist.class).getName());
 	}

@@ -53,7 +53,7 @@ public class AlbumTest {
 		album = em.find(Album.class, album.getId());
 
 		assertEquals("Wrong artist", "Thin Lizzy", album.getArtist().getName());
-		assertEquals("Wrong number of songs", 2, album.getSongs().size());
+		assertEquals("Wrong number of songs", 2, album.getSongs().size());		
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class AlbumTest {
 		TypedQuery<Album> query = em.createNamedQuery("findAllAlbums", Album.class);
 		List<Album> result = query.getResultList();
 
-		assertEquals("To few albums", result.size(), 3);
+		assertEquals("To few albums", 3, result.size());
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class AlbumTest {
 
 		assertEquals("Wrong number of albums", result.size(), 1);
 		assertEquals("Wrong artist", "Royal Hunt", result.get(0).getArtist().getName());
-		assertEquals("Wrong number of songs", result.get(0).getSongs().size(), 2);
+		assertEquals("Wrong number of songs", 2, result.get(0).getSongs().size());
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class AlbumTest {
 
 		assertEquals("Wrong number of albums", result.size(), 1);
 		assertEquals("Wrong artist", "Royal Hunt", result.get(0).getArtist().getName());
-		assertEquals("Wrong number of songs", result.get(0).getSongs().size(), 2);
+		assertEquals("Wrong number of songs", 2, result.get(0).getSongs().size());
 	}
 
 	@Test

@@ -3,7 +3,6 @@ package dk.purplegreen.musiclibrary.ui;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.faces.FacesException;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
@@ -32,7 +31,7 @@ public class UIExceptionHandler extends ExceptionHandlerWrapper {
 	}
 
 	@Override
-	public void handle() throws FacesException {
+	public void handle() {
 
 		final Iterator<ExceptionQueuedEvent> queue = getUnhandledExceptionQueuedEvents().iterator();
 
@@ -64,8 +63,8 @@ public class UIExceptionHandler extends ExceptionHandlerWrapper {
 				requestMap.put("error-message", errorMessage);
 				nav.handleNavigation(context, null, "/error");
 				context.renderResponse();
-			} catch (Throwable t) {
-				log.error("Throwable caught while handling error ", t);
+			} catch (RuntimeException e) {
+				log.error("Exception caught while handling error ", e);
 			} finally {
 				queue.remove();
 			}

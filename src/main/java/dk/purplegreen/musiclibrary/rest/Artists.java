@@ -21,7 +21,6 @@ import javax.ws.rs.core.Response;
 
 import dk.purplegreen.musiclibrary.MusicLibraryException;
 import dk.purplegreen.musiclibrary.MusicLibraryService;
-import dk.purplegreen.musiclibrary.model.Album;
 import dk.purplegreen.musiclibrary.model.Artist;
 
 @Path("/artists")

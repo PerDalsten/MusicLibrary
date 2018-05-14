@@ -86,7 +86,7 @@ public class AlbumController implements Serializable {
 	}
 
 	
-	public Album getAlbum() throws MusicLibraryException {
+	public Album getAlbum() {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Getting album: " + album);
@@ -189,7 +189,7 @@ public class AlbumController implements Serializable {
 		return artists;
 	}
 
-	public Artist getArtist() throws MusicLibraryException {
+	public Artist getArtist() {
 
 		if (log.isDebugEnabled()) {
 			log.debug("Get artist: " + artist);
