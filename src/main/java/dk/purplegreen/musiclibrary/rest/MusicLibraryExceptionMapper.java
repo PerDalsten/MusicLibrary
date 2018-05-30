@@ -23,9 +23,7 @@ public class MusicLibraryExceptionMapper implements ExceptionMapper<MusicLibrary
 
 		Response result;
 
-		if (log.isInfoEnabled()) {
-			log.info("MusicLibraryException: " + e.getMessage());
-		}
+		log.info("MusicLibraryException: {}", () -> e.getMessage());
 
 		if (AlbumNotFoundException.class.isInstance(e) || ArtistNotFoundException.class.isInstance(e)) {
 			result = Response.status(Response.Status.NOT_FOUND).build();
