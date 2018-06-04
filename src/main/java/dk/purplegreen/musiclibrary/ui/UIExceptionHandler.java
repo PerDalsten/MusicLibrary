@@ -48,8 +48,7 @@ public class UIExceptionHandler extends ExceptionHandlerWrapper {
 
 				if (t instanceof MusicLibraryException) {
 					errorMessage = t.getMessage();
-					if (log.isInfoEnabled())
-						log.info("Exception caught", t);
+					log.info("Exception caught", t);
 
 				} else {
 					errorMessage = "System error. See error log for details";

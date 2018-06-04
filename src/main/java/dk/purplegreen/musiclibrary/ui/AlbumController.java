@@ -85,19 +85,16 @@ public class AlbumController implements Serializable {
 		return "index";
 	}
 
-	
 	public Album getAlbum() {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Getting album: " + album);
-		}
+		log.debug("Getting album: {}", album);
+
 		return album;
 	}
 
 	public String saveAlbum() throws MusicLibraryException {
-		if (log.isDebugEnabled()) {
-			log.debug("Saving album: " + album.getArtist() + " " + album.getTitle());
-		}
+
+		log.debug("Saving album: {} {}", album.getArtist(), album.getTitle());
 
 		if (album.getId() == -1) {
 
@@ -110,9 +107,7 @@ public class AlbumController implements Serializable {
 			for (ListIterator<Album> iter = albums.listIterator(); iter.hasNext();) {
 				if (iter.next().equals(album)) {
 					iter.set(album);
-					if (log.isDebugEnabled()) {
-						log.debug("Replacing album in search list");
-					}
+					log.debug("Replacing album in search list");
 					break;
 				}
 			}
@@ -123,9 +118,7 @@ public class AlbumController implements Serializable {
 
 	public String deleteAlbum() throws MusicLibraryException {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Deleting album: " + album.getArtist() + " " + album.getTitle());
-		}
+		log.debug("Deleting album: {} {}", album.getArtist(), album.getTitle());
 
 		musicLibraryService.deleteAlbum(album);
 		albums.remove(album);
@@ -136,9 +129,8 @@ public class AlbumController implements Serializable {
 	}
 
 	public String cancelEditAlbum() throws MusicLibraryException {
-		if (log.isDebugEnabled()) {
-			log.debug("Cancel album edit: " + album.getArtist().getName() + " " + album.getTitle());
-		}
+
+		log.debug("Cancel album edit: {} {}", album.getArtist().getName(), album.getTitle());
 
 		String result;
 
@@ -157,9 +149,8 @@ public class AlbumController implements Serializable {
 	}
 
 	public String addSong() {
-		if (log.isDebugEnabled()) {
-			log.debug("Adding song");
-		}
+
+		log.debug("Adding song");
 
 		if (!album.getSongs().isEmpty()) {
 			Song song = album.getSongs().get(album.getSongs().size() - 1);
@@ -172,9 +163,8 @@ public class AlbumController implements Serializable {
 	}
 
 	public String deleteSong(Song song) {
-		if (log.isDebugEnabled()) {
-			log.debug("Deleting song: " + song.getId() + " " + song.getTitle());
-		}
+
+		log.debug("Deleting song: {} {}", song.getId(), song.getTitle());
 
 		album.getSongs().remove(song);
 
@@ -182,27 +172,22 @@ public class AlbumController implements Serializable {
 	}
 
 	public List<Artist> getArtists() {
-		if (log.isDebugEnabled()) {
-			log.debug("Get artists");
-		}
+
+		log.debug("Get artists");
 
 		return artists;
 	}
 
 	public Artist getArtist() {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Get artist: " + artist);
-		}
+		log.debug("Get artist: {}", artist);
 
 		return artist;
 	}
 
 	public String saveArtist() throws MusicLibraryException {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Saving artist: " + artist.getId() + " " + artist.getName());
-		}
+		log.debug("Saving artist: {} {}", artist.getId(), artist.getName());
 
 		String result;
 
@@ -221,9 +206,7 @@ public class AlbumController implements Serializable {
 
 	public String deleteArtist() throws MusicLibraryException {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Deleting artist: " + artist);
-		}
+		log.debug("Deleting artist: {}", artist);
 
 		musicLibraryService.deleteArtist(artist);
 
@@ -248,32 +231,28 @@ public class AlbumController implements Serializable {
 	}
 
 	public String viewAlbum(Album album) {
-		if (log.isDebugEnabled()) {
-			log.debug("View album: " + album);
-		}
+
+		log.debug("View album: {}", album);
+
 		this.album = album;
 		return "album";
 	}
 
 	public String newAlbum() {
 
-		if (log.isDebugEnabled()) {
-			log.debug("New album");
-		}
+		log.debug("New album");
 
 		if (artists == null) {
 			artists = musicLibraryService.getArtists();
 		}
-		
+
 		this.album = new Album(-1);
 		return "edit";
 	}
 
 	public String editAlbum() {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Edit album: " + album);
-		}
+		log.debug("Edit album: {}", album);
 
 		if (artists == null) {
 			artists = musicLibraryService.getArtists();
@@ -283,9 +262,8 @@ public class AlbumController implements Serializable {
 	}
 
 	public String newArtist() {
-		if (log.isDebugEnabled()) {
-			log.debug("New artist");
-		}
+
+		log.debug("New artist");
 
 		this.artist = new Artist(-1);
 		return "artist";
@@ -293,9 +271,8 @@ public class AlbumController implements Serializable {
 
 	public String editArtists() {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Edit artists");
-		}
+		log.debug("Edit artists");
+
 		if (artists == null) {
 			artists = musicLibraryService.getArtists();
 		}
@@ -305,9 +282,8 @@ public class AlbumController implements Serializable {
 
 	public String editArtist(Artist artist) {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Edit artist: " + artist);
-		}
+		log.debug("Edit artist: {}", artist);
+
 		this.artist = artist;
 
 		return "artist";
