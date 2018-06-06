@@ -45,11 +45,11 @@ public class Albums {
 
 		if (artist == null && title == null && year == null)
 			return Response.ok(new GenericEntity<List<AlbumResource>>(
-					service.getAlbums().stream().map(album -> new AlbumResource(album)).collect(Collectors.toList())) {
+					service.getAlbums().stream().map(AlbumResource::new).collect(Collectors.toList())) {
 			}).build();
 		else
 			return Response.ok(new GenericEntity<List<AlbumResource>>(service.findAlbums(artist, title, year).stream()
-					.map(album -> new AlbumResource(album)).collect(Collectors.toList())) {
+					.map(AlbumResource::new).collect(Collectors.toList())) {
 			}).build();
 	}
 

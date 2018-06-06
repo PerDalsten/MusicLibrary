@@ -59,7 +59,7 @@ public class AlbumDAOTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testFindByArtist() {
+	public void testFind() {
 
 		when(em.getCriteriaBuilder()).thenReturn(database.getEntityManager().getCriteriaBuilder());
 		@SuppressWarnings("rawtypes")
@@ -70,7 +70,7 @@ public class AlbumDAOTest {
 			}
 		});
 
-		List<Album> albums = albumDAO.find("beatles", null, null);
+		List<Album> albums = albumDAO.find("beatles", "abbey", 1969);
 
 		assertEquals("Wrong number of results", 1, albums.size());
 		assertEquals("Wrong artist", "The Beatles", albums.get(0).getArtist().getName());
@@ -91,26 +91,46 @@ public class AlbumDAOTest {
 
 		List<Album> albums = albumDAO.find(null, null, null);
 		assertEquals("Wrong artist", "AC/DC", albums.get(1).getArtist().getName());
+	}
 
+	@Test
+	public void testFindByArtist() {
+
+		when(em.createNamedQuery("findByArtist", Album.class))
+				.thenReturn(database.getEntityManager().createNamedQuery("findByArtist", Album.class));
+
+		List<Album> albums = albumDAO.findByArtist(new Artist(2));
+
+		assertEquals("Wrong album count", 1, albums.size());
+		assertEquals("Wrong artist", "Royal Hunt", albums.get(0).getArtist().getName());
 	}
 
 	@Test
 	public void testGetArtistAlbumCount() {
-		
+
 		ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
 		when(em.createQuery(argument.capture())).then(new Answer<Query>() {
 			public Query answer(InvocationOnMock invocation) {
 				return database.getEntityManager().createQuery(argument.getValue());
 			}
 		});
-		
-		Artist artist=new Artist();
+
+		Artist artist = new Artist();
 		artist.setId(1);
-				
+
 		assertEquals("Wrong album count", new Integer(1), albumDAO.getArtistAlbumCount(artist));
 	}
-	
-	
+
+	@Test
+	public void testGetAllAlbums() {
+		when(em.createNamedQuery("findAllAlbums", Album.class))
+				.thenReturn(database.getEntityManager().createNamedQuery("findAllAlbums", Album.class));
+
+		List<Album> albums = albumDAO.getAllAlbums();
+
+		assertEquals("Wrong album count", 3, albums.size());
+	}
+
 	@Test
 	public void testCreate() {
 		Album album = new Album();

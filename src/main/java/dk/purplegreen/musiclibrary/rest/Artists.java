@@ -76,8 +76,8 @@ public class Artists {
 	@Path("/{id}/albums")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getArtistAlbums(@PathParam("id") Integer id) throws MusicLibraryException {
-		return Response.ok(new GenericEntity<List<AlbumResource>>(service.getAlbums(new Artist(id)).stream()
-				.map(album -> new AlbumResource(album)).collect(Collectors.toList())) {
+		return Response.ok(new GenericEntity<List<AlbumResource>>(
+				service.getAlbums(new Artist(id)).stream().map(AlbumResource::new).collect(Collectors.toList())) {
 		}).build();
 	}
 }
