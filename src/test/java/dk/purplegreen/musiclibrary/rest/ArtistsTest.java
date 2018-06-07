@@ -1,14 +1,18 @@
 package dk.purplegreen.musiclibrary.rest;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -36,14 +40,23 @@ public class ArtistsTest extends JerseyTest {
 				});
 	}
 
+	private Artist artist;
+
+	@Before
+	public void createArtist() throws Exception {
+		artist = new Artist(42);
+		artist.setName("Iron Maiden");
+	}
+
 	@Test
 	public void testGetArtist() throws Exception {
 
-		when(service.getArtist(42)).thenReturn(new Artist("Iron Maiden"));
+		when(service.getArtist(42)).thenReturn(artist);
 
 		Response response = target("/artists/42").request().get();
 
-		assertEquals(200, response.getStatus());
+		assertEquals("Wrong status", 200, response.getStatus());
+		assertEquals("Wrong media type", "application/json", response.getMediaType().toString());
 
 		assertEquals("Wrong artist", "Iron Maiden", response.readEntity(Artist.class).getName());
 	}
@@ -55,6 +68,21 @@ public class ArtistsTest extends JerseyTest {
 
 		Response response = target("/artists/42").request().get();
 
-		assertEquals(response.getStatus(), 404);
+		assertEquals("Wrong status", 404, response.getStatus());
+	}
+
+	@Test
+	public void testCreateArtist() throws Exception {
+
+		when(service.createArtist(any(Artist.class))).thenReturn(artist);
+
+		Response response = target("/artists").request().post(Entity.json(artist));
+
+		assertEquals("Wrong status", 201, response.getStatus());
+
+		assertEquals("Wrong artist", "Iron Maiden", response.readEntity(Artist.class).getName());
+
+		assertTrue("Location missing", response.getHeaderString("Location").indexOf("/artists/42") > 0);
+
 	}
 }
