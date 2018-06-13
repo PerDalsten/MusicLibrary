@@ -1,3 +1,12 @@
+Application server versions
+===========================
+
+Websphere Liberty 17.0.0.4
+Wildfly 11.0.0.Final
+Glassfish 4.1.2
+TomEE Plus 7.0.4
+
+
 Project creation
 ================
 
@@ -107,6 +116,22 @@ to META-INF/MANIFEST.MF Import-Package:
 ,org.xml.sax.helpers,javax.xml.parsers;resolution:=optional,javax.naming;resolution:=optional
 
 
+TomEE config
+============
+
+Copy $JAVA_HOME/db/lib/derbyclient.jar and $JAVA_HOME/db/lib/derbyLocale*.jar to $CATALINA_HOME/lib.
+
+Add datasource to conf/tomee.xml:
+
+<Resource id="MusicLibraryDS" type="DataSource">
+      JdbcDriver org.apache.derby.jdbc.ClientDriver
+      JdbcUrl jdbc:derby://localhost:1527/musiclibrarydb
+      UserName musiclibrary
+      Password musiclibrary
+      JtaManaged true
+</Resource>
+
+
 Logging
 =======
 
@@ -133,6 +158,11 @@ or run
 ./asadmin create-system-properties dk.purplegreen.logdir=../logs 
 
 
+TomEE: add to conf/system.properties:
+
+dk.purplegreen.logdir = ../logs
+#openjpa.Log = File=../logs/openjpa.log, SQL=TRACE
+
 URL's
 =====
 
@@ -143,7 +173,7 @@ By artist: http://localhost:9080/MusicLibrary/rest/artists/83/albums
 
 UI:http://localhost:9080/MusicLibrary/albums/index.xhtml (or just http://localhost:9080/MusicLibrary)
 
-For Wildfly and Glassfish default port is 8080.
+For Wildfly, Glassfish, and TomEE default port is 8080.
 
 
 QA

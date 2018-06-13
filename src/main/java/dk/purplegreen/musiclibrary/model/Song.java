@@ -41,6 +41,16 @@ public class Song implements Serializable {
 		this.disc = disc;
 	}
 
+	public Song(Integer id, String title, Integer track, Integer disc) {
+		this.id = id;
+		this.title = title;
+		this.track = track;
+		if (disc == null)
+			this.disc = disc;
+		else
+			this.disc = 1;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -72,7 +82,7 @@ public class Song implements Serializable {
 	public void setDisc(Integer disc) {
 		this.disc = disc;
 	}
-	 
+
 	public void setAlbum(Album album) {
 		this.album = album;
 	}

@@ -58,8 +58,11 @@ public class Albums {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createAlbum(AlbumResource album) throws MusicLibraryException, URISyntaxException {
 
-		Album a = service.createAlbum(album.getAlbum());
-		return Response.created(new URI("albums/" + a.getId())).entity(a).build();
+		Album a = service.createAlbum(album.asAlbum());
+
+		return Response.created(new URI("albums/" + a.getId()))
+				.entity(new GenericEntity<AlbumResource>(new AlbumResource(a)) {
+				}).build();
 	}
 
 	@PUT
@@ -68,12 +71,13 @@ public class Albums {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateAlbum(@PathParam("id") Integer id, AlbumResource album) throws MusicLibraryException {
 
-		Album a = album.getAlbum();
+		Album a = album.asAlbum();
 
 		a.setId(id);
 
 		a = service.updateAlbum(a);
-		return Response.ok(a).build();
+		return Response.ok(new GenericEntity<AlbumResource>(new AlbumResource(a)) {
+		}).build();
 	}
 
 	@DELETE

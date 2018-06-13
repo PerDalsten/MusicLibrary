@@ -1,16 +1,36 @@
 package dk.purplegreen.musiclibrary.rest;
 
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import dk.purplegreen.musiclibrary.model.Album;
 import dk.purplegreen.musiclibrary.model.Artist;
-import dk.purplegreen.musiclibrary.model.Song;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AlbumResource {
+
+	@XmlAccessorType(XmlAccessType.FIELD)
+	static class Song {
+		private Integer id;
+		private String title;
+		private Integer track;
+		private Integer disc;
+
+		public Song() {
+		}
+
+		public Song(dk.purplegreen.musiclibrary.model.Song song) {
+			this.id = song.getId();
+			this.title = song.getTitle();
+			this.track = song.getTrack();
+			this.disc = song.getDisc();
+		}
+	}
 
 	private Integer id;
 	private Artist artist;
@@ -26,57 +46,19 @@ public class AlbumResource {
 		artist = album.getArtist();
 		title = album.getTitle();
 		year = album.getYear();
-		songs = album.getSongs().toArray(new Song[album.getSongs().size()]);
+
+		songs = album.getSongs().stream().map(s -> new Song(s)).collect(Collectors.toList())
+				.toArray(new Song[album.getSongs().size()]);
+
 	}
 
-	public Integer getId() {
-		return id;
-	}
+	public Album asAlbum() {
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+		Album album = new Album(id, artist, title, year);
 
-	public Artist getArtist() {
-		return artist;
-	}
+		for (Song s : Optional.ofNullable(songs).orElse(new Song[0]))
+			album.addSong(new dk.purplegreen.musiclibrary.model.Song(s.id, s.title, s.track, s.disc));
 
-	public void setArtist(Artist artist) {
-		this.artist = artist;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public Integer getYear() {
-		return year;
-	}
-
-	public void setYear(Integer year) {
-		this.year = year;
-	}
-
-	public Song[] getSongs() {
-		return songs;
-	}
-
-	public void setSongs(Song[] songs) {
-		this.songs = songs;
-	}
-
-	public Album getAlbum() {
-		Album album = new Album(artist, title, year);
-		album.setId(id);
-
-		if (songs != null) {
-			for (Song s : songs)
-				album.addSong(s);
-		}
 		return album;
 	}
 }
