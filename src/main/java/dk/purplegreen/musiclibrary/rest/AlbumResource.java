@@ -29,13 +29,54 @@ public class AlbumResource {
 		songs = album.getSongs().toArray(new Song[album.getSongs().size()]);
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Artist getArtist() {
+		return artist;
+	}
+
+	public void setArtist(Artist artist) {
+		this.artist = artist;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public Song[] getSongs() {
+		return songs;
+	}
+
+	public void setSongs(Song[] songs) {
+		this.songs = songs;
+	}
+
 	public Album getAlbum() {
 		Album album = new Album(artist, title, year);
 		album.setId(id);
 
-		for (Song s : songs)
-			album.addSong(s);
-
+		if (songs != null) {
+			for (Song s : songs)
+				album.addSong(s);
+		}
 		return album;
 	}
 }

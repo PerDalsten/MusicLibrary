@@ -14,6 +14,7 @@ import javax.persistence.criteria.Root;
 
 import dk.purplegreen.musiclibrary.model.Album;
 import dk.purplegreen.musiclibrary.model.Artist;
+import dk.purplegreen.musiclibrary.model.Song;
 
 @Dependent
 public class AlbumDAO {
@@ -35,6 +36,12 @@ public class AlbumDAO {
 	}
 
 	public void delete(Album album) {
+		// This should not be necessary due to the Cascade.ALL on Album, but a bug in
+		// OpenJPA will issue the delete on Album before the Songs causing ALBUM_FK
+		// violation.
+		for (Song song : album.getSongs()) {
+			em.remove(song);
+		}
 		em.remove(album);
 	}
 

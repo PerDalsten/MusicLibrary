@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "song")
@@ -73,14 +72,7 @@ public class Song implements Serializable {
 	public void setDisc(Integer disc) {
 		this.disc = disc;
 	}
-
-	// Avoid infinite recursion from bi-directional relationship
-	// when serializing to JSON
-	@XmlTransient
-	public Album getAlbum() {
-		return album;
-	}
-
+	 
 	public void setAlbum(Album album) {
 		this.album = album;
 	}

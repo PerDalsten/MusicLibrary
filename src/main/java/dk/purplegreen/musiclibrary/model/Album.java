@@ -97,9 +97,7 @@ public class Album implements Serializable {
 	}
 
 	public void addSong(Song song) {
-		if (song.getAlbum() != this) {
-			song.setAlbum(this);
-		}
+		song.setAlbum(this);
 		getSongs().add(song);
 	}
 
