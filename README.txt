@@ -123,7 +123,7 @@ Copy $JAVA_HOME/db/lib/derbyclient.jar and $JAVA_HOME/db/lib/derbyLocale*.jar to
 
 Add datasource to conf/tomee.xml:
 
-<Resource id="MusicLibraryDS" type="DataSource">
+<Resource id="jdbc/MusicLibraryDS" type="DataSource">
       JdbcDriver org.apache.derby.jdbc.ClientDriver
       JdbcUrl jdbc:derby://localhost:1527/musiclibrarydb
       UserName musiclibrary
