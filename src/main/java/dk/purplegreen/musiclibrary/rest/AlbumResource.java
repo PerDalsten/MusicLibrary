@@ -47,7 +47,7 @@ public class AlbumResource {
 		title = album.getTitle();
 		year = album.getYear();
 
-		songs = album.getSongs().stream().map(s -> new Song(s)).collect(Collectors.toList())
+		songs = album.getSongs().stream().map(Song::new).collect(Collectors.toList())
 				.toArray(new Song[album.getSongs().size()]);
 
 	}
