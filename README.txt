@@ -108,6 +108,20 @@ or use asadmin to create datasource:
 
 ./asadmin create-jdbc-connection-pool --restype javax.sql.DataSource --datasourceclassname org.apache.derby.jdbc.ClientDataSource --property "ServerName=localhost:PortNumber=1527:DatabaseName=musiclibrarydb:User=musiclibrary:Password=MusicLibrary:ConnectionAttributes=;create\=false" MusicLibrary 
 
+For MySQL copy driver to <Glassfish install directory>/glassfish/lib/ and use
+
+    <jdbc-connection-pool datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlDataSource" name="MySQLMusicLibrary" res-type="javax.sql.DataSource">
+      <property name="user" value="musiclibrary"></property>
+      <property name="url" value="jdbc:mysql://localhost:3306/musiclibrarydb"></property>
+      <property name="password" value="musiclibrary"></property>
+    </jdbc-connection-pool>
+
+or
+
+./asadmin create-jdbc-connection-pool --datasourceclassname com.mysql.jdbc.jdbc2.optional.MysqlDataSource --restype javax.sql.DataSource --property "user=musiclibrary:password=musiclibrary:url=jdbc\\:mysql\\://localhost\\:3306/musiclibrarydb" MusicLibrary
+
+Create datasource:
+
 ./asadmin create-jdbc-resource --connectionpoolid MusicLibrary jdbc/MusicLibraryDS
 
 Due to a bug in Glassfish 4.1 it is necessary to patch glassfish/modules/org.eclipse.persistence.moxy.jar. Append the following
@@ -130,6 +144,18 @@ Add datasource to conf/tomee.xml:
       Password musiclibrary
       JtaManaged true
 </Resource>
+
+
+For MySQL copy driver to <TomEE install directory>/lib/ and use
+
+<Resource id="jdbc/MusicLibraryDS" type="DataSource">
+      JdbcDriver com.mysql.jdbc.Driver
+      JdbcUrl jdbc:mysql://localhost:3306/musiclibrarydb
+      UserName musiclibrary
+      Password musiclibrary
+      JtaManaged true
+</Resource>
+
 
 
 Logging
@@ -161,7 +187,7 @@ or run
 TomEE: add to conf/system.properties:
 
 dk.purplegreen.logdir = ../logs
-#openjpa.Log = File=../logs/openjpa.log, SQL=TRACE
+
 
 URL's
 =====
