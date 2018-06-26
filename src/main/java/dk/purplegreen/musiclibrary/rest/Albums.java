@@ -60,9 +60,7 @@ public class Albums {
 
 		Album a = service.createAlbum(album.asAlbum());
 
-		return Response.created(new URI("albums/" + a.getId()))
-				.entity(new GenericEntity<AlbumResource>(new AlbumResource(a)) {
-				}).build();
+		return Response.created(new URI("albums/" + a.getId())).entity(new AlbumResource(a)).build();
 	}
 
 	@PUT
@@ -76,8 +74,7 @@ public class Albums {
 		a.setId(id);
 
 		a = service.updateAlbum(a);
-		return Response.ok(new GenericEntity<AlbumResource>(new AlbumResource(a)) {
-		}).build();
+		return Response.ok(new AlbumResource(a)).build();
 	}
 
 	@DELETE
