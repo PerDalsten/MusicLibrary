@@ -43,7 +43,17 @@ Copy derbyclient.jar to lib/derby (create) directory in server.
 		<properties URL="jdbc:mysql://localhost" databaseName="musiclibrarydb" password="{xor}MiosNjwzNj0tPi0m" portNumber="3306" serverName="localhost" user="musiclibrary"/>
 	</dataSource>
     -->
-
+    
+    <!-- HyperSQL
+    <library id="HSQLLib">
+		<fileset dir="${server.config.dir}/lib/hsql" includes="*.jar"/>
+	</library>
+	<dataSource jndiName="jdbc/MusicLibraryDS" type="javax.sql.ConnectionPoolDataSource">
+		<jdbcDriver libraryRef="HSQLLib" javax.sql.ConnectionPoolDataSource="org.hsqldb.jdbc.pool.JDBCPooledDataSource"/>
+		<properties url="jdbc:hsqldb:hsql://localhost/musiclibrarydb" password="{xor}MiosNjwzNj0tPi0m" user="musiclibrary"/>
+	</dataSource>
+    -->
+    
     <webApplication id="MusicLibrary" location="MusicLibrary.war" name="MusicLibrary"/>
 </server>    
 
@@ -59,7 +69,7 @@ Deploy derbyclient.jar as application and add datasource.
     <driver>derbyclient.jar</driver>
     <security>
     	<user-name>musiclibrary</user-name>
-    <password>musiclibrary</password>
+        <password>musiclibrary</password>
     </security>
 </datasource>
 
@@ -77,11 +87,22 @@ Add to logging subsystem (if using spy on datasource):
 </logger>
 
 
-For MySQL install driver using script and use:
+For MySQL deploy/install driver using script and use:
 
 <datasource jndi-name="java:/jdbc/MusicLibraryDS" pool-name="MusicLibrary">
     <connection-url>jdbc:mysql://localhost:3306/musiclibrarydb</connection-url>
     <driver>mysql</driver>
+    <security>
+        <user-name>musiclibrary</user-name>
+        <password>musiclibrary</password>
+    </security>
+</datasource>
+
+For HyperSQL deploy/install driver using script and use:
+
+<datasource jndi-name="java:/jdbc/MusicLibraryDS" pool-name="MusicLibrary" spy="true" use-ccm="true">
+    <connection-url>jdbc:hsqldb:hsql://localhost/musiclibrarydb</connection-url>
+    <driver>hsql</driver>
     <security>
         <user-name>musiclibrary</user-name>
         <password>musiclibrary</password>
@@ -120,6 +141,19 @@ or
 
 ./asadmin create-jdbc-connection-pool --datasourceclassname com.mysql.jdbc.jdbc2.optional.MysqlDataSource --restype javax.sql.DataSource --property "user=musiclibrary:password=musiclibrary:url=jdbc\\:mysql\\://localhost\\:3306/musiclibrarydb" MusicLibrary
 
+For HyperSQL copy driver to <Glassfish install directory>/glassfish/lib/ and use
+
+    <jdbc-connection-pool datasource-classname="org.hsqldb.jdbc.JDBCDataSource" name="MusicLibrary" res-type="javax.sql.DataSource">
+      <property name="user" value="musiclibrary"></property>
+      <property name="url" value="jdbc:hsqldb:hsql://localhost/musiclibrarydb"></property>
+      <property name="password" value="musiclibrary"></property>
+    </jdbc-connection-pool>
+
+or
+
+./asadmin create-jdbc-connection-pool --datasourceclassname org.hsqldb.jdbc.JDBCDataSource --restype javax.sql.DataSource --property "user=musiclibrary:password=musiclibrary:url=jdbc\\:hsqldb\\:hsql\\://localhost/musiclibrarydb" MusicLibrary
+
+
 Create datasource:
 
 ./asadmin create-jdbc-resource --connectionpoolid MusicLibrary jdbc/MusicLibraryDS
@@ -156,6 +190,18 @@ For MySQL copy driver to <TomEE install directory>/lib/ and use
       JtaManaged true
 </Resource>
 
+
+For MySQL copy driver to <TomEE install directory>/lib/ and use
+
+<!-- Server must be compatible with TomEE driver version (check with silent=false command line argument)
+<Resource id="jdbc/MusicLibraryDS" type="DataSource">
+     JdbcDriver org.hsqldb.jdbcDriver
+     JdbcUrl jdbc:hsqldb:hsql://localhost/musiclibrarydb
+     UserName musiclibrary
+     Password musiclibrary
+     JtaManaged true
+</Resource>
+  
 
 
 Logging

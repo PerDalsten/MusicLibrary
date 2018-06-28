@@ -1,0 +1,9 @@
+connect localhost
+ 
+batch
+ 
+module add --name=hsql.jdbc --resources=hsqldb-2.4.1.jar --dependencies=javax.api,javax.transaction.api
+  
+/subsystem=datasources/jdbc-driver=hsql:add(driver-name="hsql",driver-module-name="hsql.jdbc",driver-class-name=org.hsqldb.jdbc.JDBCDriver)
+
+run-batch

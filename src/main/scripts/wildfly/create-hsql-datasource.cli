@@ -1,0 +1,3 @@
+connect localhost
+
+data-source add --jndi-name=java:/jdbc/MusicLibraryDS --name=MusicLibrary --connection-url=jdbc:hsqldb:hsql://localhost/musiclibrarydb --driver-name=hsql --user-name=musiclibrary --password=musiclibrary --use-ccm=true --spy=true
