@@ -141,6 +141,17 @@ or
 
 ./asadmin create-jdbc-connection-pool --datasourceclassname com.mysql.jdbc.jdbc2.optional.MysqlDataSource --restype javax.sql.DataSource --property "user=musiclibrary:password=musiclibrary:url=jdbc\\:mysql\\://localhost\\:3306/musiclibrarydb" MusicLibrary
 
+For HyperSQL copy driver to <Glassfish install directory>/glassfish/lib/ and use
+
+    <jdbc-connection-pool datasource-classname="org.hsqldb.jdbc.JDBCDataSource" name="MusicLibrary" res-type="javax.sql.DataSource">
+      <property name="user" value="musiclibrary"></property>     
+      <property name="url" value="jdbc:hsqldb:hsql://localhost/musiclibrarydb"></property>
+      <property name="password" value="musiclibrary"></property>
+    </jdbc-connection-pool>
+
+or
+
+./asadmin create-jdbc-connection-pool --datasourceclassname org.hsqldb.jdbc.JDBCDataSource --restype javax.sql.DataSource --property "user=musiclibrary:password=musiclibrary:url=jdbc\\:hsqldb\\:hsql\\://localhost/musiclibrarydb" MusicLibrary
 
 Create datasource:
 
