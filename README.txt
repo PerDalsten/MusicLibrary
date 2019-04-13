@@ -76,7 +76,7 @@ Deploy derbyclient.jar as application and add datasource.
 or run scripts in src/main/scripts/wildfly as needed e.g.
 
 
-cd $JAVA_HOME/db/lib; /path/to/jboss-cli.sh --file=/path/to/create-derby-database-driver.cli 
+cd $DERBY_HOME/lib; /path/to/jboss-cli.sh --file=/path/to/create-derby-database-driver.cli 
 
 /path/to/jboss-cli.sh --file=/path/to/create-derby-datasource.cli
 
@@ -166,7 +166,7 @@ to META-INF/MANIFEST.MF Import-Package:
 TomEE config
 ============
 
-Copy $JAVA_HOME/db/lib/derbyclient.jar and $JAVA_HOME/db/lib/derbyLocale*.jar to $CATALINA_HOME/lib.
+Copy $DERBY_HOME/lib/derbyclient.jar and $DERBY_HOME/lib/derbyLocale*.jar to $CATALINA_HOME/lib.
 
 Add datasource to conf/tomee.xml:
 

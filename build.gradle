@@ -13,7 +13,7 @@ repositories {
 }
 
 ext.jerseyVersion = '2.27'
-ext.eclipseLinkVersion = '2.7.3'
+ext.eclipseLinkVersion = '2.7.4'
 
 dependencies {
     providedCompile "javax:javaee-api:7.0"
@@ -21,7 +21,7 @@ dependencies {
     compile 'org.apache.logging.log4j:log4j-core:2.8.2'
 
     testCompile "junit:junit:4.12"
-    testCompile "org.mockito:mockito-core:2.23.0"
+    testCompile "org.mockito:mockito-core:2.26.0"
     testCompile "org.apache.derby:derby:10.14.2.0"
     testCompile "org.eclipse.persistence:eclipselink:${eclipseLinkVersion}"
     testCompile "org.eclipse.persistence:org.eclipse.persistence.jpa:${eclipseLinkVersion}"
